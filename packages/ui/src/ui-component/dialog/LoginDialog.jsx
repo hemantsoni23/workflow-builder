@@ -37,10 +37,20 @@ const LoginDialog = ({ show, onConfirm }) => {
     }, [userLoginApi.data, onConfirm])
 
     useEffect(() => {
+        if (userRegisterApi.data) {
+            setError('')
+
+            onConfirm(username, email)
+        }
+    }, [userRegisterApi.data, onConfirm])
+
+    useEffect(() => {
         if (userRegisterApi.error) {
             setError(userRegisterApi.error.response?.data?.message || userRegisterApi.error.message || 'Issue in registering...')
         }
-    }, [userRegisterApi.error]).useEffect(() => {
+    }, [userRegisterApi.error])
+
+    useEffect(() => {
         if (userLoginApi.error) {
             setError(userLoginApi.error.response?.data?.message || userLoginApi.error.message || 'Issue in login...')
         }

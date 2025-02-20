@@ -30,6 +30,7 @@
         "flowise-embed": "latest",
         "flowise-embed-react": "latest",
         "flowise-react-json-view": "*",
+        "flowise-ui": "file:",
         "formik": "^2.2.6",
         "framer-motion": "^4.1.13",
         "history": "^5.0.0",
