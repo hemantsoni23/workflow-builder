@@ -9,6 +9,7 @@ export class Init1693840429259 implements MigrationInterface {
                 \`flowData\` text NOT NULL,
                 \`deployed\` tinyint DEFAULT NULL,
                 \`isPublic\` tinyint DEFAULT NULL,
+                \`user_id\` varchar(255) NOT NULL,
                 \`apikeyid\` varchar(255) DEFAULT NULL,
                 \`chatbotConfig\` varchar(255) DEFAULT NULL,
                 \`createdDate\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),

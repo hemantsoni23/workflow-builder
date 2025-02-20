@@ -22,7 +22,7 @@ export const init = async (): Promise<void> => {
             homePath = process.env.DATABASE_PATH ?? flowisePath
             appDataSource = new DataSource({
                 type: 'sqlite',
-                database: path.resolve(homePath, 'database.sqlite'),
+                database: path.resolve('E:/Office/Noyco/Agent_builder/workflow-builder/packages/server', 'database.sqlite'),
                 synchronize: false,
                 migrationsRun: false,
                 entities: Object.values(entities),
@@ -80,7 +80,8 @@ export const init = async (): Promise<void> => {
             homePath = process.env.DATABASE_PATH ?? flowisePath
             appDataSource = new DataSource({
                 type: 'sqlite',
-                database: path.resolve(homePath, 'database.sqlite'),
+                // database: path.resolve(homePath, 'database.sqlite'),
+                database: path.resolve('E:/Office/Noyco/Agent_builder/workflow-builder/packages/server', 'database.sqlite'),
                 synchronize: false,
                 migrationsRun: false,
                 entities: Object.values(entities),

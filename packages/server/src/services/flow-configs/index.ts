@@ -9,7 +9,17 @@ import { getErrorMessage } from '../../errors/utils'
 const getSingleFlowConfig = async (chatflowId: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const chatflow = await chatflowsService.getChatflowById(chatflowId)
+
+        const user_id = 'user'
+
+        if (!user_id) {
+            throw new InternalFlowiseError(
+                StatusCodes.PRECONDITION_FAILED,
+                `Error: chatflowsRouter.getChatflowById - user_id not provided!`
+            )
+        }
+
+        const chatflow = await chatflowsService.getChatflowById(chatflowId, user_id as string)
         if (!chatflow) {
             throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Chatflow ${chatflowId} not found in the database!`)
         }

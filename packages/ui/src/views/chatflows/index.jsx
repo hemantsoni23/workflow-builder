@@ -40,10 +40,19 @@ const Chatflows = () => {
     const [images, setImages] = useState({})
     const [search, setSearch] = useState('')
     const [loginDialogOpen, setLoginDialogOpen] = useState(false)
-    const [loginDialogProps, setLoginDialogProps] = useState({})
+    const [loginDialogProps, setLoginDialogProps] = useState({ title: 'Login', confirmButtonName: 'Submit' })
 
     const getAllChatflowsApi = useApi(chatflowsApi.getAllChatflows)
     const [view, setView] = useState(localStorage.getItem('flowDisplayStyle') || 'card')
+
+    useEffect(() => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
+        if (!currentUser) {
+            setLoginDialogProps({ title: 'Login', confirmButtonName: 'Login' })
+            setLoginDialogOpen(true)
+        }
+    }, [])
 
     const handleChange = (event, nextView) => {
         if (nextView === null) return
@@ -64,8 +73,7 @@ const Chatflows = () => {
     }
 
     const onLoginClick = (username, password) => {
-        localStorage.setItem('username', username)
-        localStorage.setItem('password', password)
+        setLoginDialogOpen(false)
         navigate(0)
     }
 
@@ -78,7 +86,13 @@ const Chatflows = () => {
     }
 
     useEffect(() => {
-        getAllChatflowsApi.request()
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
+        if (!currentUser) {
+            navigate('/')
+        } else {
+            getAllChatflowsApi.request()
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -165,7 +179,7 @@ const Chatflows = () => {
                             </ToggleButton>
                         </ToggleButtonGroup>
                         <StyledButton variant='contained' onClick={addNew} startIcon={<IconPlus />} sx={{ borderRadius: 2, height: 40 }}>
-                            Add New
+                            Add New by Anoop Yadav
                         </StyledButton>
                     </ViewHeader>
                     {!view || view === 'card' ? (

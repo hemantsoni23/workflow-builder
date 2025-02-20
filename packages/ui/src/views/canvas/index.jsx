@@ -199,6 +199,8 @@ const Canvas = () => {
     }
 
     const handleSaveFlow = (chatflowName) => {
+        const user_id = JSON.parse(localStorage.getItem('currentUser') || '{}')?.email
+
         if (reactFlowInstance) {
             const nodes = reactFlowInstance.getNodes().map((node) => {
                 const nodeData = cloneDeep(node.data)
@@ -223,6 +225,7 @@ const Canvas = () => {
                     deployed: false,
                     isPublic: false,
                     flowData,
+                    user_id: user_id,
                     type: isAgentCanvas ? 'MULTIAGENT' : 'CHATFLOW'
                 }
                 createNewChatflowApi.request(newChatflowBody)
@@ -231,7 +234,7 @@ const Canvas = () => {
                     name: chatflowName,
                     flowData
                 }
-                updateChatflowApi.request(chatflow.id, updateBody)
+                updateChatflowApi.request(chatflow.id, user_id, updateBody)
             }
         }
     }
@@ -426,6 +429,13 @@ const Canvas = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [createNewChatflowApi.data, createNewChatflowApi.error])
 
+    useEffect(() => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
+        if (!currentUser) {
+            navigate('/')
+        }
+    }, [])
     // Update chatflow successful
     useEffect(() => {
         if (updateChatflowApi.data) {
@@ -454,7 +464,8 @@ const Canvas = () => {
         setIsSyncNodesButtonEnabled(false)
         setIsUpsertButtonEnabled(false)
         if (chatflowId) {
-            getSpecificChatflowApi.request(chatflowId)
+            const user_id = JSON.parse(localStorage.getItem('currentUser')).email
+            getSpecificChatflowApi.request(chatflowId, user_id)
         } else {
             if (localStorage.getItem('duplicatedFlowData')) {
                 handleLoadFlow(localStorage.getItem('duplicatedFlowData'))

@@ -42,6 +42,7 @@ export interface IChatFlow {
     createdDate: Date
     deployed?: boolean
     isPublic?: boolean
+    user_id: string
     apikeyid?: string
     analytic?: string
     speechToText?: string
@@ -50,6 +51,18 @@ export interface IChatFlow {
     apiConfig?: string
     category?: string
     type?: ChatflowType
+}
+
+export interface IUser {
+    id: string
+    username?: string
+    email: string
+    password?: string
+    googleId?: string
+    profilePicture?: string
+    isGoogleUser: boolean
+    createdAt: Date
+    updatedAt: Date
 }
 
 export interface IChatMessage {

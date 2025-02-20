@@ -419,17 +419,18 @@ const ProfileSection = ({ username, handleLogout }) => {
                                                     </ListItemIcon>
                                                     <ListItemText primary={<Typography variant='body2'>About Flowise</Typography>} />
                                                 </ListItemButton>
-                                                {localStorage.getItem('username') && localStorage.getItem('password') && (
-                                                    <ListItemButton
-                                                        sx={{ borderRadius: `${customization.borderRadius}px` }}
-                                                        onClick={handleLogout}
-                                                    >
-                                                        <ListItemIcon>
-                                                            <IconLogout stroke={1.5} size='1.3rem' />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={<Typography variant='body2'>Logout</Typography>} />
-                                                    </ListItemButton>
-                                                )}
+                                                {JSON.parse(localStorage.getItem('currentUser') || '{}')?.username &&
+                                                    JSON.parse(localStorage.getItem('currentUser') || '{}')?.token && (
+                                                        <ListItemButton
+                                                            sx={{ borderRadius: `${customization.borderRadius}px` }}
+                                                            onClick={handleLogout}
+                                                        >
+                                                            <ListItemIcon>
+                                                                <IconLogout stroke={1.5} size='1.3rem' />
+                                                            </ListItemIcon>
+                                                            <ListItemText primary={<Typography variant='body2'>Logout</Typography>} />
+                                                        </ListItemButton>
+                                                    )}
                                             </List>
                                         </Box>
                                     </PerfectScrollbar>

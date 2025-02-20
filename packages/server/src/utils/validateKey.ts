@@ -31,11 +31,14 @@ export const validateChatflowAPIKey = async (req: Request, chatflow: ChatFlow) =
  */
 export const validateAPIKey = async (req: Request) => {
     const authorizationHeader = (req.headers['Authorization'] as string) ?? (req.headers['authorization'] as string) ?? ''
+    console.log(authorizationHeader)
     if (!authorizationHeader) return false
 
     const suppliedKey = authorizationHeader.split(`Bearer `).pop()
     if (suppliedKey) {
+        console.log('validateKey1')
         const keys = await apikeyService.getAllApiKeys()
+        console.log('validateKey2')
         const apiSecret = keys.find((key: any) => key.apiKey === suppliedKey)?.apiSecret
         if (!apiSecret) return false
         if (!compareKeys(apiSecret, suppliedKey)) return false

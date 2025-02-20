@@ -25,7 +25,18 @@ const createPrediction = async (req: Request, res: Response, next: NextFunction)
                 `Error: predictionsController.createPrediction - body not provided!`
             )
         }
-        const chatflow = await chatflowsService.getChatflowById(req.params.id)
+
+        const user_id = 'user'
+
+        if (!user_id) {
+            throw new InternalFlowiseError(
+                StatusCodes.PRECONDITION_FAILED,
+                `Error: chatflowsRouter.getChatflowById - user_id not provided!`
+            )
+        }
+
+        const chatflow = await chatflowsService.getChatflowById(req.params.id, user_id as string)
+        // const chatflow = await chatflowsService.getChatflowById(req.params.id)
         if (!chatflow) {
             throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Chatflow ${req.params.id} not found`)
         }

@@ -65,14 +65,88 @@ export class App {
         this.app = express()
     }
 
+    // async initDatabase() {
+    //     // Initialize database
+    //     try {
+    //         await this.AppDataSource.initialize()
+    //         logger.info('📦 [server]: Data Source is initializing...')
+
+    //         // Run Migrations Scripts
+    //         await this.AppDataSource.runMigrations({ transaction: 'each' })
+
+    //         // Initialize nodes pool
+    //         this.nodesPool = new NodesPool()
+    //         await this.nodesPool.initialize()
+
+    //         // Initialize abort controllers pool
+    //         this.abortControllerPool = new AbortControllerPool()
+
+    //         // Initialize API keys
+    //         await getAPIKeys()
+
+    //         // Initialize encryption key
+    //         await getEncryptionKey()
+
+    //         // Initialize Rate Limit
+    //         this.rateLimiterManager = RateLimiterManager.getInstance()
+    //         await this.rateLimiterManager.initializeRateLimiters(await getDataSource().getRepository(ChatFlow).find())
+
+    //         // Initialize cache pool
+    //         this.cachePool = new CachePool()
+
+    //         // Initialize telemetry
+    //         this.telemetry = new Telemetry()
+
+    //         // Initialize SSE Streamer
+    //         this.sseStreamer = new SSEStreamer()
+
+    //         // Init Queues
+    //         if (process.env.MODE === MODE.QUEUE) {
+    //             this.queueManager = QueueManager.getInstance()
+    //             this.queueManager.setupAllQueues({
+    //                 componentNodes: this.nodesPool.componentNodes,
+    //                 telemetry: this.telemetry,
+    //                 cachePool: this.cachePool,
+    //                 appDataSource: this.AppDataSource,
+    //                 abortControllerPool: this.abortControllerPool
+    //             })
+    //             this.redisSubscriber = new RedisEventSubscriber(this.sseStreamer)
+    //             await this.redisSubscriber.connect()
+    //         }
+
+    //         logger.info('📦 [server]: Data Source has been initialized!')
+    //     } catch (error) {
+    //         logger.error('❌ [server]: Error during Data Source initialization:', error)
+    //     }
+    // }
+
     async initDatabase() {
-        // Initialize database
         try {
+            console.log('📦 [DEBUG]: Initializing Data Source...')
             await this.AppDataSource.initialize()
             logger.info('📦 [server]: Data Source is initializing...')
 
+            // Check database connection
+            if (!this.AppDataSource.isInitialized) {
+                throw new Error('Database connection failed!')
+            }
+            console.log('✅ [DEBUG]: Database connection established!')
+
             // Run Migrations Scripts
             await this.AppDataSource.runMigrations({ transaction: 'each' })
+            console.log('✅ [DEBUG]: Migrations executed successfully!')
+
+            // Debug: Fetch and log ChatFlow records
+            const chatFlowRepo = this.AppDataSource.getRepository(ChatFlow)
+            const chatFlows = await chatFlowRepo.find()
+            console.log('🗄️ [DEBUG]: ChatFlow Table Data: working fine')
+
+            // Debug: Check ChatFlow table schema
+            const metadata = this.AppDataSource.getMetadata(ChatFlow)
+            console.log(
+                '📝 [DEBUG]: ChatFlow Table Columns:',
+                metadata.columns.map((col) => col.propertyName)
+            )
 
             // Initialize nodes pool
             this.nodesPool = new NodesPool()
@@ -89,7 +163,7 @@ export class App {
 
             // Initialize Rate Limit
             this.rateLimiterManager = RateLimiterManager.getInstance()
-            await this.rateLimiterManager.initializeRateLimiters(await getDataSource().getRepository(ChatFlow).find())
+            await this.rateLimiterManager.initializeRateLimiters(await chatFlowRepo.find())
 
             // Initialize cache pool
             this.cachePool = new CachePool()
@@ -115,8 +189,10 @@ export class App {
             }
 
             logger.info('📦 [server]: Data Source has been initialized!')
+            console.log('✅ [DEBUG]: Database initialization complete!')
         } catch (error) {
             logger.error('❌ [server]: Error during Data Source initialization:', error)
+            console.error('❌ [DEBUG]: Database initialization failed!', error)
         }
     }
 
@@ -176,12 +252,12 @@ export class App {
                         } else {
                             const isKeyValidated = await validateAPIKey(req)
                             if (!isKeyValidated) {
-                                return res.status(401).json({ error: 'Unauthorized Access' })
+                                return res.status(401).json({ error: 'Unauthorized Access3' })
                             }
                             next()
                         }
                     } else {
-                        return res.status(401).json({ error: 'Unauthorized Access' })
+                        return res.status(401).json({ error: 'Unauthorized Access2' })
                     }
                 } else {
                     // If the req path does not contain /api/v1, then allow the request to pass through, example: /assets, /canvas
@@ -203,12 +279,12 @@ export class App {
                         } else {
                             const isKeyValidated = await validateAPIKey(req)
                             if (!isKeyValidated) {
-                                return res.status(401).json({ error: 'Unauthorized Access' })
+                                return res.status(401).json({ error: 'Unauthorized Access4' })
                             }
                             next()
                         }
                     } else {
-                        return res.status(401).json({ error: 'Unauthorized Access' })
+                        return res.status(401).json({ error: 'Unauthorized Access5' })
                     }
                 } else {
                     // If the req path does not contain /api/v1, then allow the request to pass through, example: /assets, /canvas

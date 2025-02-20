@@ -31,6 +31,7 @@ const getAllApiKeys = async () => {
     try {
         if (_apikeysStoredInJson()) {
             const keys = await getAPIKeys_json()
+            console.log(keys)
             return await addChatflowsCount(keys)
         } else if (_apikeysStoredInDb()) {
             const appServer = getRunningExpressApp()
