@@ -34,6 +34,7 @@
 .env.test.local
 .env.production.local
 .env
+/packages/server/.env
 
 ## turbo
 .turbo
