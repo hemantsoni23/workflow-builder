@@ -10,7 +10,6 @@
     },
     "license": "SEE LICENSE IN LICENSE.md",
     "dependencies": {
-        "flowise-api": "file:",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.0"
     },
