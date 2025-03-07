@@ -7,7 +7,7 @@ services:
       context: ./nextjs-ui
     container_name: nextjs
     ports:
-      - "3000:3000"
+      - "4000:3000"
     networks:
       - workflow-builder
     environment:
@@ -20,8 +20,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-    # ports:
-    #   - "3000:3000"
+    ports:
+      - "3000:80"
     depends_on:
       - nextjs
       - flowise
@@ -82,8 +82,8 @@ services:
     image: anoop82yadav82/activepieces-noyco
     container_name: activepieces
     restart: unless-stopped
-    # ports:
-    #   - '8080:80'
+    ports:
+      - '8080:80'
     depends_on:
       - postgres
       - redis
@@ -139,8 +139,8 @@ services:
       # - REDIS_CERT=${REDIS_CERT}
       # - REDIS_KEY=${REDIS_KEY}
       # - REDIS_CA=${REDIS_CA}
-    # ports:
-    #   - '3001:${PORT}'
+    ports:
+      - '3001:${PORT}'
     volumes:
       - app_cache:/root/.flowise
     working_dir: /usr/src
