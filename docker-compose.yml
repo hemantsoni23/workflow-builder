@@ -1,40 +1,36 @@
-version: '3.0'
-
 services:
 
   nextjs:
     build:
       context: ./nextjs-ui
     container_name: nextjs
-    ports:
-      - "4000:3000"
+    expose:
+      - "3000"
     networks:
       - workflow-builder
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
     restart: unless-stopped
 
   nginx:
-    image: nginx:latest
+    build: ./nginx
     container_name: nginx
     restart: unless-stopped
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
     ports:
-      - "3000:80"
+      - "80:80"
     depends_on:
       - nextjs
-      - flowise
       - activepieces
+      - flowise
     networks:
       - workflow-builder
 
   postgres:
-    image: 'postgres'
+    image: postgres:latest
     container_name: postgres
     restart: unless-stopped
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       POSTGRES_USER: ${AP_POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${AP_POSTGRES_PASSWORD}
@@ -44,37 +40,32 @@ services:
       - workflow-builder
 
   initdb:
-    image: 'postgres'
+    image: postgres:latest
     container_name: postgres-init
     depends_on:
       - postgres
     environment:
       POSTGRES_USER: ${AP_POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${AP_POSTGRES_PASSWORD}
-    env_file: .env  
+    env_file: .env
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
     networks:
       - workflow-builder
     entrypoint: >
-      sh -c "
-        sleep 5 &&
-        echo 'Creating Databases...' &&
-        until pg_isready -h postgres -U ${AP_POSTGRES_USERNAME}; do
-          echo 'Waiting for postgres...'
-          sleep 2;
-        done &&
-        PGPASSWORD=${AP_POSTGRES_PASSWORD} psql -h postgres -U ${AP_POSTGRES_USERNAME} -c 'CREATE DATABASE activepieces;' &&
-        PGPASSWORD=${AP_POSTGRES_PASSWORD} psql -h postgres -U ${AP_POSTGRES_USERNAME} -c 'CREATE DATABASE flowise;' &&
-        echo 'Databases Created Successfully'
-      "
+      sh -c "sleep 5 && echo 'Creating Databases...' &&
+      until pg_isready -h postgres -U ${AP_POSTGRES_USERNAME}; do
+        echo 'Waiting for postgres...'; sleep 2; done &&
+      PGPASSWORD=${AP_POSTGRES_PASSWORD} psql -h postgres -U ${AP_POSTGRES_USERNAME} -c 'CREATE DATABASE activepieces;' &&
+      PGPASSWORD=${AP_POSTGRES_PASSWORD} psql -h postgres -U ${AP_POSTGRES_USERNAME} -c 'CREATE DATABASE flowise;' &&
+      echo 'Databases Created Successfully'"
 
   redis:
-    image: 'redis'
+    image: redis:latest
     container_name: redis
     restart: unless-stopped
     volumes:
-      - 'redis_data:/data'
+      - redis_data:/data
     networks:
       - workflow-builder
 
@@ -82,8 +73,9 @@ services:
     image: anoop82yadav82/activepieces-noyco
     container_name: activepieces
     restart: unless-stopped
-    ports:
-      - '8080:80'
+    # Activepieces listens on port 3000 internally.
+    expose:
+      - "3000"
     depends_on:
       - postgres
       - redis
@@ -101,7 +93,7 @@ services:
       - postgres
     env_file: .env
     environment:
-      - PORT=${PORT}
+      - PORT=3001
       - CORS_ORIGINS=${CORS_ORIGINS}
       - IFRAME_ORIGINS=${IFRAME_ORIGINS}
       - FLOWISE_FILE_SIZE_LIMIT=${FLOWISE_FILE_SIZE_LIMIT}
@@ -117,36 +109,14 @@ services:
       - APIKEY_PATH=${APIKEY_PATH}
       - SECRETKEY_PATH=${SECRETKEY_PATH}
       - FLOWISE_SECRETKEY_OVERWRITE=${FLOWISE_SECRETKEY_OVERWRITE}
-      # - LOG_LEVEL=${LOG_LEVEL}
-      # - LOG_PATH=${LOG_PATH}
-      # - BLOB_STORAGE_PATH=${BLOB_STORAGE_PATH}
-      # - DISABLE_FLOWISE_TELEMETRY=${DISABLE_FLOWISE_TELEMETRY}
-      # - MODEL_LIST_CONFIG_JSON=${MODEL_LIST_CONFIG_JSON}
-      # - GLOBAL_AGENT_HTTP_PROXY=${GLOBAL_AGENT_HTTP_PROXY}
-      # - GLOBAL_AGENT_HTTPS_PROXY=${GLOBAL_AGENT_HTTPS_PROXY}
-      # - GLOBAL_AGENT_NO_PROXY=${GLOBAL_AGENT_NO_PROXY}
-      # - DISABLED_NODES=${DISABLED_NODES}
-      # - MODE=${MODE}
-      # - WORKER_CONCURRENCY=${WORKER_CONCURRENCY}
-      # - QUEUE_NAME=${QUEUE_NAME}
-      # - QUEUE_REDIS_EVENT_STREAM_MAX_LEN=${QUEUE_REDIS_EVENT_STREAM_MAX_LEN}
-      - REDIS_URL=${REDIS_URL}
-      # - REDIS_HOST=${REDIS_HOST}
-      # - REDIS_PORT=${REDIS_PORT}
-      # - REDIS_PASSWORD=${REDIS_PASSWORD}
-      # - REDIS_USERNAME=${REDIS_USERNAME}
-      # - REDIS_TLS=${REDIS_TLS}
-      # - REDIS_CERT=${REDIS_CERT}
-      # - REDIS_KEY=${REDIS_KEY}
-      # - REDIS_CA=${REDIS_CA}
-    ports:
-      - '3001:${PORT}'
+    expose:
+      - "3001"
     volumes:
       - app_cache:/root/.flowise
     working_dir: /usr/src
     networks:
       - workflow-builder
-    entrypoint: /bin/sh -c "sleep 5; pnpm start"
+    entrypoint: /bin/sh -c "sleep 10; pnpm start"
 
 volumes:
   postgres_data:
