@@ -94,7 +94,7 @@ services:
       - workflow-builder
 
   flowise:
-    image: anoop82yadav82/docker-flowise
+    image: anoop82yadav82/flowise-image
     restart: always
     container_name: flowise
     depends_on:
