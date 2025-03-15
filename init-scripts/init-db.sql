@@ -1,0 +1,2 @@
+CREATE DATABASE activepieces;
+CREATE DATABASE flowise;
