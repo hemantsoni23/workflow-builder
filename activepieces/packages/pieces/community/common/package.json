@@ -1,5 +1,8 @@
 {
   "name": "@activepieces/pieces-common",
   "version": "0.4.1",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "zod": "^3.24.2"
+  }
 }

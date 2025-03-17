@@ -11,8 +11,11 @@ import { ErrorCode } from '@activepieces/shared';
 
 export const API_BASE_URL =
   import.meta.env.MODE === 'cloud'
-    ? 'https://cloud.activepieces.com'
-    : window.location.origin;
+   
+    ?  'https://cloud.activepieces.com'
+
+
+    : window.location.origin + '/activepieces';
 export const API_URL = `${API_BASE_URL}/api`;
 
 const disallowedRoutes = [

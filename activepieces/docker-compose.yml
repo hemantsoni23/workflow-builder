@@ -1,4 +1,4 @@
-version: '3.0'
+
 services:
   activepieces:
     image: my-activepieces  # Use your custom image instead of the official one

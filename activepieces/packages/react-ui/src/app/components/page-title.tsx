@@ -8,7 +8,9 @@ type PageTitleProps = {
 };
 
 const PageTitle = ({ title, children }: PageTitleProps) => {
-  const websiteBranding = flagsHooks.useWebsiteBranding();
+  // const websiteBranding = flagsHooks.useWebsiteBranding();
+  const websiteBranding = flagsHooks.useWebsiteBranding() || { websiteName: 'Activepieces' };
+
 
   useEffect(() => {
     document.title = `${title} | ${websiteBranding.websiteName}`;
