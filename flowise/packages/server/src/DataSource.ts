@@ -70,8 +70,8 @@ export const init = async (): Promise<void> => {
                 password: process.env.DATABASE_PASSWORD,
                 database: process.env.DATABASE_NAME,
                 ssl: getDatabaseSSLFromEnv(),
-                synchronize: false,
-                migrationsRun: false,
+                synchronize: true,
+                migrationsRun: true,
                 entities: Object.values(entities),
                 migrations: postgresMigrations
             })
