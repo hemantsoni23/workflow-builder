@@ -20,6 +20,7 @@ export default defineConfig(async ({ mode }) => {
     }
     dotenv.config()
     return {
+        base: process.env.VITE_BASE || '/flowise/',
         plugins: [react()],
         resolve: {
             alias: {

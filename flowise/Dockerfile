@@ -1,5 +1,5 @@
 # # Build local monorepo image
-# # docker build --no-cache -t  flowise .
+# docker build --no-cache -t  flowise .
 
 # # Run image
 # # docker run -d -p 3000:3000 flowise
@@ -55,7 +55,12 @@ ENV PUPPETEER_SKIP_DOWNLOAD=true \
 # Install PNPM globally
 RUN npm install -g pnpm
 
-# Set working directory
+ENV PUPPETEER_SKIP_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
+    NODE_OPTIONS=--max-old-space-size=8192 \
+    VITE_API_BASE_URL=/flowise \
+    VITE_UI_BASE_URL=/flowise
+
 WORKDIR /usr/src
 
 # Copy source code and install dependencies
@@ -64,4 +69,5 @@ RUN pnpm install && pnpm build
 
 # Expose port and define start command
 EXPOSE 3000
-CMD ["pnpm", "start"]
+
+CMD [ "pnpm", "start" ]

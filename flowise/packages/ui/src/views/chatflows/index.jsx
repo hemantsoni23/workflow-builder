@@ -48,6 +48,8 @@ const Chatflows = () => {
     useEffect(() => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'))
 
+        console.log(baseURL);
+
         if (!currentUser) {
             setLoginDialogProps({ title: 'Login', confirmButtonName: 'Login' })
             setLoginDialogOpen(true)

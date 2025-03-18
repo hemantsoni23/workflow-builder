@@ -1,0 +1,91 @@
+:80 {
+    # Set default headers for all responses
+    header {
+        # Enable CORS
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Access-Control-Allow-Headers "Origin, Content-Type, Accept, Authorization"
+        # Remove Server header for security
+        -Server
+    }
+
+    # Handle API requests - direct to activepieces without path manipulation
+    handle /api/* {
+        reverse_proxy activepieces:80
+        # reverse_proxy flowise:3001
+    }
+
+    # Handle assets path requests
+    handle /assets/* {
+        # Set MIME types for critical file extensions
+        header *.js Content-Type "application/javascript"
+        header *.mjs Content-Type "application/javascript"
+        header *.css Content-Type "text/css"
+        header *.json Content-Type "application/json"
+        
+        # Forward to activepieces
+        reverse_proxy activepieces:80
+    }
+
+    # Handle locales requests
+    handle /locales/* {
+        reverse_proxy activepieces:80
+    }
+
+    # Handle requests for Activepieces at /activepieces
+    handle_path /activepieces/* {
+        # Set MIME types for critical file extensions
+        header *.js Content-Type "application/javascript"
+        header *.mjs Content-Type "application/javascript"
+        header *.css Content-Type "text/css"
+        header *.json Content-Type "application/json"
+
+        root * /usr/src/app  
+        file_server          
+        # Rewrite the path to remove the /activepieces prefix before proxying
+        uri strip_prefix /activepieces
+        
+        # Forward to activepieces
+        reverse_proxy activepieces:80
+
+        redir /sign-up /activepieces/sign-up 308
+        redir /project-* /activepieces/project-{path} 308
+    }
+
+    # Handle requests for Flowise at /flowise
+    handle_path /flowise/* {
+        # Set MIME types for critical file extensions
+        header *.js Content-Type "application/javascript"
+        header *.mjs Content-Type "application/javascript"
+        header *.css Content-Type "text/css"
+        header *.json Content-Type "application/json"
+
+        root * /usr/src/app  
+        file_server        
+
+        handle /api/* {
+            reverse_proxy flowise:3001
+        }  
+
+        handle /flowise/locales/* {
+            reverse_proxy flowise:3001
+        }
+
+        handle /flowise/assets/* {
+            root * /usr/src/app/assets
+            # file_server
+        }
+        
+        # Forward to Flowise
+        reverse_proxy flowise:3001
+    }
+
+    # Default handler for everything else - goes to NextJS
+    handle {
+        reverse_proxy nextjs:3000
+    }
+
+    log {
+        output stdout
+    }
+}
