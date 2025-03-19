@@ -10,10 +10,10 @@
     }
 
     # Handle API requests - direct to activepieces without path manipulation
-    handle /api/* {
-        reverse_proxy activepieces:80
-        # reverse_proxy flowise:3001
-    }
+    # handle /api/* {
+    #     reverse_proxy activepieces:80
+    #     # reverse_proxy flowise:3001
+    # }
 
     # Handle assets path requests
     handle /assets/* {
