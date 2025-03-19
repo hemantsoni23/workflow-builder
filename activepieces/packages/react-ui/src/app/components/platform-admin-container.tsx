@@ -33,18 +33,18 @@ export function PlatformAdminContainer({
   const showPlatformAdminDashboard = useShowPlatformAdminDashboard();
   const isLocked = (locked: boolean) => locked || (showPlatformDemo ?? false);
   const links: SidebarLink[] = [
-    {
-      to: '/platform/analytics',
-      label: t('Overview'),
-      icon: LineChart,
-      locked: isLocked(!platform.analyticsEnabled),
-    },
-    {
-      to: '/platform/projects',
-      label: t('Projects'),
-      icon: LayoutGrid,
-      locked: isLocked(!platform.manageProjectsEnabled),
-    },
+    // {
+    //   to: '/platform/analytics',
+    //   label: t('Overview'),
+    //   icon: LineChart,
+    //   locked: isLocked(!platform.analyticsEnabled),
+    // },
+    // {
+    //   to: '/platform/projects',
+    //   label: t('Projects'),
+    //   icon: LayoutGrid,
+    //   locked: isLocked(!platform.manageProjectsEnabled),
+    // },
     {
       to: '/platform/users',
       label: t('Users'),

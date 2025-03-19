@@ -19,7 +19,7 @@ const Login = ({ switchToRegister, onSubmit, close }) => {
 
       const loginAPI = async () => {
         try {
-            const response = await axios.post("http://localhost:5050/api/auth/login", { formData });
+          const response = await axios.post("/api/auth/login", { formData } );
             console.log(response)
             if (response.data?.token) {
             localStorage.setItem("user", JSON.stringify(response.data?.user));

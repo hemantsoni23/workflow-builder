@@ -124,12 +124,13 @@ export function Sidebar({
                 >
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <img
+                      {/* <img
                         src={branding.logos.logoIconUrl}
                         alt={t('home')}
                         width={28}
                         height={28}
-                      />
+                      /> */}
+                       <h1 style={{color: "#6e41e2", fontWeight: "700"} }>NOYCO</h1>
                     </TooltipTrigger>
                     <TooltipContent side="right">{t('Home')}</TooltipContent>
                   </Tooltip>
@@ -148,7 +149,7 @@ export function Sidebar({
                 ))}
 
                 <div className="grow"></div>
-                {isHomeDashboard && showSupportAndDocs && (
+                 {/* {isHomeDashboard && showSupportAndDocs && (
                   <>
                     <CustomTooltipLink
                       to={supportUrl}
@@ -163,7 +164,7 @@ export function Sidebar({
                       newWindow={true}
                     />
                   </>
-                )}
+                )} */}
               </nav>
             </ScrollArea>
           </aside>

@@ -1,7 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /node_modules\/sequelize\/lib\/dialects\/.*\/connection-manager\.js$/,
+      parser: { requireEnsure: false },
+    });
+    return config;
+  },
+
     basePath: '',
     // The rewrites here should be removed as they're now handled by Caddy
+
+
     async rewrites() {
         return [
             // {

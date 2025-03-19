@@ -375,16 +375,16 @@ const routes = [
       </PageTitle>
     ),
   },
-  {
-    path: '/platform/projects',
-    element: (
-      <PlatformAdminContainer>
-        <PageTitle title="Projects">
-          <ProjectsPage />
-        </PageTitle>
-      </PlatformAdminContainer>
-    ),
-  },
+  // {
+  //   path: '/platform/projects',
+  //   element: (
+  //     <PlatformAdminContainer>
+  //       <PageTitle title="Projects">
+  //         <ProjectsPage />
+  //       </PageTitle>
+  //     </PlatformAdminContainer>
+  //   ),
+  // },
   {
     path: '/platform/setup/pieces',
     element: (
@@ -397,19 +397,19 @@ const routes = [
       </PlatformAdminContainer>
     ),
   },
-  {
-    path: '/platform/analytics',
-    element: (
-      <PlatformAdminContainer>
-        <PageTitle title="Analytics">
-          <div className="flex flex-col gap-4 w-full">
-            <PlatformMessages />
-            <AnalyticsPage />
-          </div>
-        </PageTitle>
-      </PlatformAdminContainer>
-    ),
-  },
+  // {
+  //   path: '/platform/analytics',
+  //   element: (
+  //     <PlatformAdminContainer>
+  //       <PageTitle title="Analytics">
+  //         <div className="flex flex-col gap-4 w-full">
+  //           <PlatformMessages />
+  //           <AnalyticsPage />
+  //         </div>
+  //       </PageTitle>
+  //     </PlatformAdminContainer>
+  //   ),
+  // },
   {
     path: '/platform',
     element: (
@@ -420,42 +420,42 @@ const routes = [
       </PlatformAdminContainer>
     ),
   },
-  {
-    path: '/platform/setup/connections',
-    element: (
-      <PlatformAdminContainer>
-        <PlatformSecondSidebarLayout type="setup">
-          <PageTitle title="Connections">
-            <GlobalConnectionsTable />
-          </PageTitle>
-        </PlatformSecondSidebarLayout>
-      </PlatformAdminContainer>
-    ),
-  },
-  {
-    path: '/platform/setup/templates',
-    element: (
-      <PlatformAdminContainer>
-        <PlatformSecondSidebarLayout type="setup">
-          <PageTitle title="Templates">
-            <TemplatesPage />
-          </PageTitle>
-        </PlatformSecondSidebarLayout>
-      </PlatformAdminContainer>
-    ),
-  },
-  {
-    path: '/platform/setup/branding',
-    element: (
-      <PlatformAdminContainer>
-        <PlatformSecondSidebarLayout type="setup">
-          <PageTitle title="Branding">
-            <BrandingPage />
-          </PageTitle>
-        </PlatformSecondSidebarLayout>
-      </PlatformAdminContainer>
-    ),
-  },
+  // {
+  //   path: '/platform/setup/connections',
+  //   element: (
+  //     <PlatformAdminContainer>
+  //       <PlatformSecondSidebarLayout type="setup">
+  //         <PageTitle title="Connections">
+  //           <GlobalConnectionsTable />
+  //         </PageTitle>
+  //       </PlatformSecondSidebarLayout>
+  //     </PlatformAdminContainer>
+  //   ),
+  // },
+  // {
+  //   path: '/platform/setup/templates',
+  //   element: (
+  //     <PlatformAdminContainer>
+  //       <PlatformSecondSidebarLayout type="setup">
+  //         <PageTitle title="Templates">
+  //           <TemplatesPage />
+  //         </PageTitle>
+  //       </PlatformSecondSidebarLayout>
+  //     </PlatformAdminContainer>
+  //   ),
+  // },
+  // {
+  //   path: '/platform/setup/branding',
+  //   element: (
+  //     <PlatformAdminContainer>
+  //       <PlatformSecondSidebarLayout type="setup">
+  //         <PageTitle title="Branding">
+  //           <BrandingPage />
+  //         </PageTitle>
+  //       </PlatformSecondSidebarLayout>
+  //     </PlatformAdminContainer>
+  //   ),
+  // },
   {
     path: '/platform/users',
     element: (
@@ -526,18 +526,18 @@ const routes = [
       </PlatformAdminContainer>
     ),
   },
-  {
-    path: '/platform/setup/billing',
-    element: (
-      <PlatformAdminContainer>
-        <PageTitle title="Billing">
-          <PlatformSecondSidebarLayout type="setup">
-            <SettingsBilling />
-          </PlatformSecondSidebarLayout>
-        </PageTitle>
-      </PlatformAdminContainer>
-    ),
-  },
+  // {
+  //   path: '/platform/setup/billing',
+  //   element: (
+  //     <PlatformAdminContainer>
+  //       <PageTitle title="Billing">
+  //         <PlatformSecondSidebarLayout type="setup">
+  //           <SettingsBilling />
+  //         </PlatformSecondSidebarLayout>
+  //       </PageTitle>
+  //     </PlatformAdminContainer>
+  //   ),
+  // },
   {
     path: '/platform/security/signing-keys',
     element: (

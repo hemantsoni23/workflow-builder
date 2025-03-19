@@ -17,7 +17,7 @@ const Register = ({ switchToLogin, onSubmit, close }) => {
     const registerAPI = async() => {
 
         try {
-          const response = await axios.post("http://localhost:5050/api/auth/register", { formData })
+          const response = await axios.post("/api/auth/register", { formData })
           switchToLogin()
           alert("Registration Successfull!")
         } catch (error) {

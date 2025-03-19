@@ -50,35 +50,35 @@ export default function PlatformSecondSidebarLayout({
           href: '/platform/setup/ai',
           icon: <Sparkles size={iconSize} />,
         },
-        {
-          title: t('Branding'),
-          href: '/platform/setup/branding',
-          icon: <Palette size={iconSize} />,
-        },
-        {
-          title: t('Global Connections'),
-          href: '/platform/setup/connections',
-          icon: <Link size={iconSize} />,
-        },
+        // {
+        //   title: t('Branding'),
+        //   href: '/platform/setup/branding',
+        //   icon: <Palette size={iconSize} />,
+        // },
+        // {
+        //   title: t('Global Connections'),
+        //   href: '/platform/setup/connections',
+        //   icon: <Link size={iconSize} />,
+        // },
         {
           title: t('Pieces'),
           href: '/platform/setup/pieces',
           icon: <Puzzle size={iconSize} />,
         },
-        {
-          title: t('Templates'),
-          href: '/platform/setup/templates',
-          icon: <Workflow size={iconSize} />,
-        },
-        ...(edition === ApEdition.CLOUD && !showPlatformDemo
-          ? [
-              {
-                title: t('Billing'),
-                href: '/platform/setup/billing',
-                icon: <Receipt size={iconSize} />,
-              },
-            ]
-          : []),
+        // {
+        //   title: t('Templates'),
+        //   href: '/platform/setup/templates',
+        //   icon: <Workflow size={iconSize} />,
+        // },
+      //   ...(edition === ApEdition.CLOUD && !showPlatformDemo
+      //     ? [
+      //         {
+      //           title: t('Billing'),
+      //           href: '/platform/setup/billing',
+      //           icon: <Receipt size={iconSize} />,
+      //         },
+      //       ]
+      //     : []),
       ],
     },
     security: {

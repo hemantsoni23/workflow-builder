@@ -12,7 +12,7 @@ const GoogleLoginButton = ({close}) => {
  const googleLogin = async (token) => {
   try {
     const response = await axios.post(
-      `http://localhost:5050/api/auth/google/login`,
+      `/api/auth/google-login`,
       { token },
       { withCredentials: true }
     );

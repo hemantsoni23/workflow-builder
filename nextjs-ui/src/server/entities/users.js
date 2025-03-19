@@ -1,21 +1,17 @@
-
-
-import { DataTypes } from "sequelize";
-import { sequelize } from "../config/db.js";
-// import UserIdentity from "./UserIdentity.js";
-// import Project from "./Project.js";
+import  DataTypes  from "sequelize";
+import { sequelize } from "@/server/config/db";
 
 const User = sequelize.define(
   "User",
   {
     id: {
-      type: DataTypes.UUID, // Using UUID for scalability
+      type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: true, // Optional like Flowise
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
@@ -29,7 +25,7 @@ const User = sequelize.define(
     googleId: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue:"null"
+      defaultValue: "null",
     },
     profilePicture: {
       type: DataTypes.STRING,
@@ -42,21 +38,17 @@ const User = sequelize.define(
     platformRole: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: "USER", // Example: USER, ADMIN
+      defaultValue: "USER",
     },
     status: {
       type: DataTypes.STRING,
-      defaultValue: "active", // Helps manage disabled/suspended accounts
+      defaultValue: "active",
     },
   },
   {
     timestamps: true,
-    paranoid: true, // Enables soft delete functionality
+    paranoid: true,
   }
 );
-
-// Relationships for future expension...
-// User.hasOne(UserIdentity, { foreignKey: "userId", onDelete: "CASCADE" }); // One-to-One
-// User.hasMany(Project, { foreignKey: "ownerId", onDelete: "CASCADE" }); // One-to-Many
 
 export default User;
