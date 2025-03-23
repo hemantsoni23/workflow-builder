@@ -5,25 +5,25 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MoonIcon, SunIcon, ExternalLinkIcon } from "lucide-react";
-import Portal from "@/utils/portals";
-import Auth from "../components/auth/index"
+import AuthModal from "@/components/AuthModal";
+import Cookies from "js-cookie";
+
 export default function Home() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isPortal, setIsPortal] = useState(false);
-  const [userData, setUserData] = useState(() => {
-  if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem("user")) || null;
-  }
-  return null;
-});
+  const isAuthenticated = Cookies.get("noyco-token");
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const handleNavigation = (path) => {
-    window.location.href = path;
+    if(isAuthenticated){
+      window.location.href = path;
+    }else{
+      setIsPortal(true);
+    }
   };
 
   if (!mounted) {
@@ -34,28 +34,25 @@ export default function Home() {
     setIsPortal(!isPortal)
   }
 
-
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       {/* Navbar */}
       <nav className="sticky top-0 z-10 backdrop-blur-md bg-background/80 border-b border-border">
         <div className="container flex justify-between items-center py-4">
           <div className="flex items-center pl-4">
-            <h1 className="text-2xl font-bold">NOYCO2e2 opo  asa </h1>
+            <h1 className="text-2xl font-bold">NOYCO</h1>
           </div>
-
-
 
           <div className="flex items-center gap-4">
           <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleIsPortal}
-              aria-label="Toggle theme"
-              className="rounded-full"
-            >
-        {userData?.name ? userData.name : "Login"}
-            </Button>
+            variant="ghost"
+            size="icon"
+            onClick={toggleIsPortal}
+            aria-label="Authentication"
+            className="rounded-sm px-6 py-4 border-2"
+          >
+            {isAuthenticated ? "Logout" : "Login"}
+          </Button>
           </div>
 
           <div className="flex items-center gap-4">
@@ -76,7 +73,7 @@ export default function Home() {
         </div>
       </nav>
 
-      {isPortal === true ? <Portal close={ toggleIsPortal} component={ <Auth close={toggleIsPortal}/>}/>:<></>}
+      {isPortal && <AuthModal close={toggleIsPortal} />}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-primary/5 dark:bg-primary/10">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
