@@ -1,2 +1,3 @@
 CREATE DATABASE activepieces;
 CREATE DATABASE flowise;
+CREATE DATABASE noyco;

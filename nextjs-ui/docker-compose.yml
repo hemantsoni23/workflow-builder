@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: noyco
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: noyco-app
+    env_file: .env.local
+    environment:
+      - DB_USER=postgres
+      - DB_HOST=db
+      - DB_NAME=noyco
+      - DB_PASS=postgres
+      - DB_PORT=5432
+      - JWT_SECRET=noyco-workflow-builder
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    command: ["node_modules/.bin/next", "start"]
+
+volumes:
+  db_data:

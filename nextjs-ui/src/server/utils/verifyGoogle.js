@@ -1,6 +1,6 @@
 import googleClient from "@/server/config/googleConfig";
 
-export const verifyToken = async (idToken) => {
+export const verifyGoogleToken = async (idToken) => {
   try {
     const ticket = await googleClient.verifyIdToken({
       idToken,

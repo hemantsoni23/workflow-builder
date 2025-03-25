@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import User from "@/server/entities/users";
-import { verifyToken } from "@/server/utils/verifyGoogle";
+import { verifyGoogleToken } from "@/server/utils/verifyGoogle";
 import { Op } from "sequelize";
 import { syncDatabase } from "@/server/migration/createTable";
 
@@ -72,7 +72,7 @@ export async function googleLogin(req) {
       return NextResponse.json({ message: "Token is required" }, { status: 400 });
     }
 
-    const userData = await verifyToken(token);
+    const userData = await verifyGoogleToken(token);
     if (!userData) {
       return NextResponse.json({ message: "Invalid or expired token" }, { status: 400 });
     }
@@ -117,7 +117,7 @@ export async function verifyToken(req) {
       return NextResponse.json({ message: "Invalid token" }, { status: 401 });
     }
 
-    return NextResponse.json({ id:user.id }, { status: 200 });
+    return NextResponse.json({ userId:user.id }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Token verification failed" }, { status: 401 });
   }
