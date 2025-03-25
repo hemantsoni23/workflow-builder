@@ -243,7 +243,14 @@ const CanvasNode = ({ data }) => {
                                             : 0
                                 }}
                             >
-                                <Button sx={{ borderRadius: 25, width: '90%', mb: 2 }} variant='outlined' onClick={onDialogClicked}>
+                                <Button sx={{
+                                    borderRadius: 25, width: '90%', mb: 2,
+                                    bgcolor: 'rgb(112 112 112)', // Background color
+                                    color: 'white', // Text color
+                                    '&:hover': {
+                                        bgcolor: 'rgb(112 112 112)', // Background color on hover
+                                    }
+                                }} variant='outlined' onClick={onDialogClicked}>
                                     Additional Parameters
                                 </Button>
                             </div>
