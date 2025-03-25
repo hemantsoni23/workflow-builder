@@ -1,4 +1,4 @@
-import { removeFolderFromStorage } from 'flowise-components'
+import { ICommonObject, removeFolderFromStorage } from 'flowise-components'
 import { StatusCodes } from 'http-status-codes'
 import { ChatflowType, IReactFlowObject } from '../../Interface'
 import { ChatFlow } from '../../database/entities/ChatFlow'
@@ -26,6 +26,15 @@ const checkIfChatflowIsValidForStreaming = async (chatflowId: string): Promise<a
         })
         if (!chatflow) {
             throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Chatflow ${chatflowId} not found`)
+        }
+
+        /* Check for post-processing settings, if available isStreamValid is always false */
+        let chatflowConfig: ICommonObject = {}
+        if (chatflow.chatbotConfig) {
+            chatflowConfig = JSON.parse(chatflow.chatbotConfig)
+            if (chatflowConfig?.postProcessing?.enabled === true) {
+                return { isStreaming: false }
+            }
         }
 
         /*** Get Ending Node with Directed Graph  ***/
@@ -105,20 +114,17 @@ const deleteChatflow = async (chatflowId: string): Promise<any> => {
     }
 }
 
-const getAllChatflows = async (user_id: string, type?: ChatflowType): Promise<ChatFlow[]> => {
+const getAllChatflows = async (type?: ChatflowType): Promise<ChatFlow[]> => {
     try {
         const appServer = getRunningExpressApp()
         const dbResponse = await appServer.AppDataSource.getRepository(ChatFlow).find()
-        const filteredByUserId = dbResponse.filter((chatflow) => chatflow.user_id === user_id)
-
-        // If a type is provided, filter further by type
         if (type === 'MULTIAGENT') {
-            return filteredByUserId.filter((chatflow) => chatflow.type === 'MULTIAGENT')
+            return dbResponse.filter((chatflow) => chatflow.type === 'MULTIAGENT')
         } else if (type === 'CHATFLOW') {
-            return filteredByUserId.filter((chatflow) => chatflow.type === 'CHATFLOW' || !chatflow.type)
+            // fetch all chatflows that are not agentflow
+            return dbResponse.filter((chatflow) => chatflow.type === 'CHATFLOW' || !chatflow.type)
         }
-
-        return filteredByUserId // If no type is provided, return all matching user_id chatflows
+        return dbResponse
     } catch (error) {
         throw new InternalFlowiseError(
             StatusCodes.INTERNAL_SERVER_ERROR,
@@ -151,18 +157,15 @@ const getChatflowByApiKey = async (apiKeyId: string, keyonly?: unknown): Promise
     }
 }
 
-const getChatflowById = async (chatflowId: string, user_id: string): Promise<any> => {
+const getChatflowById = async (chatflowId: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
         const dbResponse = await appServer.AppDataSource.getRepository(ChatFlow).findOneBy({
-            id: chatflowId,
-            user_id: user_id // Ensure chatflow belongs to the user
+            id: chatflowId
         })
-
         if (!dbResponse) {
-            throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Chatflow ${chatflowId} not found or does not belong to user ${user_id}!`)
+            throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Chatflow ${chatflowId} not found in the database!`)
         }
-
         return dbResponse
     } catch (error) {
         throw new InternalFlowiseError(

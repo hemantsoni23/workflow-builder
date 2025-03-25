@@ -7,7 +7,7 @@ const ErrorBoundary = ({ error }) => {
     const theme = useTheme()
 
     const copyToClipboard = () => {
-        const errorMessage = `Status: ${error.response.status}\n${error.response.data.message}`
+        const errorMessage = `Status: ${error?.response?.status || "Unknown"}\n${error?.response?.data?.message || "No message available"}`
         navigator.clipboard.writeText(errorMessage)
     }
 
@@ -16,7 +16,7 @@ const ErrorBoundary = ({ error }) => {
             <Stack flexDirection='column' sx={{ alignItems: 'center', gap: 3 }}>
                 <Stack flexDirection='column' sx={{ alignItems: 'center', gap: 1 }}>
                     <Typography variant='h2'>Oh snap!</Typography>
-                    <Typography variant='h3'>The following error occured when loading this page.</Typography>
+                    <Typography variant='h3'>The following error occurred when loading this page.</Typography>
                 </Stack>
                 <Card variant='outlined'>
                     <Box sx={{ position: 'relative', px: 2, py: 3 }}>
@@ -28,9 +28,9 @@ const ErrorBoundary = ({ error }) => {
                             <IconCopy />
                         </IconButton>
                         <pre style={{ margin: 0 }}>
-                            <code>{`Status: ${error.response.status}`}</code>
+                            <code>{`Status: ${error?.response?.status || "Unknown"}`}</code>
                             <br />
-                            <code>{error.response.data.message}</code>
+                            <code>{error?.response?.data?.message || "No error message available"}</code>
                         </pre>
                     </Box>
                 </Card>
@@ -42,6 +42,7 @@ const ErrorBoundary = ({ error }) => {
             </Stack>
         </Box>
     )
+
 }
 
 ErrorBoundary.propTypes = {

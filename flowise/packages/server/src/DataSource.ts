@@ -22,7 +22,7 @@ export const init = async (): Promise<void> => {
             homePath = process.env.DATABASE_PATH ?? flowisePath
             appDataSource = new DataSource({
                 type: 'sqlite',
-                database: path.resolve('E:/Office/Noyco/Agent_builder/workflow-builder/packages/server', 'database.sqlite'),
+                database: path.resolve(homePath, 'database.sqlite'),
                 synchronize: false,
                 migrationsRun: false,
                 entities: Object.values(entities),
@@ -80,8 +80,7 @@ export const init = async (): Promise<void> => {
             homePath = process.env.DATABASE_PATH ?? flowisePath
             appDataSource = new DataSource({
                 type: 'sqlite',
-                // database: path.resolve(homePath, 'database.sqlite'),
-                database: path.resolve('E:/Office/Noyco/Agent_builder/workflow-builder/packages/server', 'database.sqlite'),
+                database: path.resolve(homePath, 'database.sqlite'),
                 synchronize: false,
                 migrationsRun: false,
                 entities: Object.values(entities),
@@ -99,7 +98,7 @@ export function getDataSource(): DataSource {
 }
 
 const getDatabaseSSLFromEnv = () => {
-    if (process.env.DATABASE_SSL_KEY_BASE64) {
+    if (process.env.DATABASE_SSL_KEY_BASE64==='true') {
         return {
             rejectUnauthorized: false,
             ca: Buffer.from(process.env.DATABASE_SSL_KEY_BASE64, 'base64')
