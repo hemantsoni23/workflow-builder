@@ -3,7 +3,6 @@ import { Request, Response } from 'express'
 import path from 'path'
 import cors from 'cors'
 import http from 'http'
-import basicAuth from 'express-basic-auth'
 import { DataSource } from 'typeorm'
 import { MODE } from './Interface'
 import { getNodeModulesPackagePath, getEncryptionKey } from './utils'
@@ -20,7 +19,6 @@ import { Telemetry } from './utils/telemetry'
 import flowiseApiV1Router from './routes'
 import errorHandlerMiddleware from './middlewares/errors'
 import { SSEStreamer } from './utils/SSEStreamer'
-import { validateAPIKey } from './utils/validateKey'
 import { IMetricsProvider } from './Interface.Metrics'
 import { Prometheus } from './metrics/Prometheus'
 import { OpenTelemetry } from './metrics/OpenTelemetry'
@@ -65,88 +63,15 @@ export class App {
         this.app = express()
     }
 
-    // async initDatabase() {
-    //     // Initialize database
-    //     try {
-    //         await this.AppDataSource.initialize()
-    //         logger.info('📦 [server]: Data Source is initializing...')
-
-    //         // Run Migrations Scripts
-    //         await this.AppDataSource.runMigrations({ transaction: 'each' })
-
-    //         // Initialize nodes pool
-    //         this.nodesPool = new NodesPool()
-    //         await this.nodesPool.initialize()
-
-    //         // Initialize abort controllers pool
-    //         this.abortControllerPool = new AbortControllerPool()
-
-    //         // Initialize API keys
-    //         await getAPIKeys()
-
-    //         // Initialize encryption key
-    //         await getEncryptionKey()
-
-    //         // Initialize Rate Limit
-    //         this.rateLimiterManager = RateLimiterManager.getInstance()
-    //         await this.rateLimiterManager.initializeRateLimiters(await getDataSource().getRepository(ChatFlow).find())
-
-    //         // Initialize cache pool
-    //         this.cachePool = new CachePool()
-
-    //         // Initialize telemetry
-    //         this.telemetry = new Telemetry()
-
-    //         // Initialize SSE Streamer
-    //         this.sseStreamer = new SSEStreamer()
-
-    //         // Init Queues
-    //         if (process.env.MODE === MODE.QUEUE) {
-    //             this.queueManager = QueueManager.getInstance()
-    //             this.queueManager.setupAllQueues({
-    //                 componentNodes: this.nodesPool.componentNodes,
-    //                 telemetry: this.telemetry,
-    //                 cachePool: this.cachePool,
-    //                 appDataSource: this.AppDataSource,
-    //                 abortControllerPool: this.abortControllerPool
-    //             })
-    //             this.redisSubscriber = new RedisEventSubscriber(this.sseStreamer)
-    //             await this.redisSubscriber.connect()
-    //         }
-
-    //         logger.info('📦 [server]: Data Source has been initialized!')
-    //     } catch (error) {
-    //         logger.error('❌ [server]: Error during Data Source initialization:', error)
-    //     }
-    // }
-
     async initDatabase() {
+        // Initialize database
         try {
-            console.log('📦 [DEBUG]: Initializing Data Source...')
             await this.AppDataSource.initialize()
             logger.info('📦 [server]: Data Source is initializing...')
 
-            // Check database connection
-            if (!this.AppDataSource.isInitialized) {
-                throw new Error('Database connection failed!')
-            }
-            console.log('✅ [DEBUG]: Database connection established!')
-
             // Run Migrations Scripts
             await this.AppDataSource.runMigrations({ transaction: 'each' })
-            console.log('✅ [DEBUG]: Migrations executed successfully!')
-
-            // Debug: Fetch and log ChatFlow records
-            const chatFlowRepo = this.AppDataSource.getRepository(ChatFlow)
-            const chatFlows = await chatFlowRepo.find()
-            console.log('🗄️ [DEBUG]: ChatFlow Table Data: working fine')
-
-            // Debug: Check ChatFlow table schema
-            const metadata = this.AppDataSource.getMetadata(ChatFlow)
-            console.log(
-                '📝 [DEBUG]: ChatFlow Table Columns:',
-                metadata.columns.map((col) => col.propertyName)
-            )
+            logger.info('✅ [server]: Data Source migrations have been run!')
 
             // Initialize nodes pool
             this.nodesPool = new NodesPool()
@@ -163,7 +88,7 @@ export class App {
 
             // Initialize Rate Limit
             this.rateLimiterManager = RateLimiterManager.getInstance()
-            await this.rateLimiterManager.initializeRateLimiters(await chatFlowRepo.find())
+            await this.rateLimiterManager.initializeRateLimiters(await getDataSource().getRepository(ChatFlow).find())
 
             // Initialize cache pool
             this.cachePool = new CachePool()
@@ -189,10 +114,8 @@ export class App {
             }
 
             logger.info('📦 [server]: Data Source has been initialized!')
-            console.log('✅ [DEBUG]: Database initialization complete!')
         } catch (error) {
             logger.error('❌ [server]: Error during Data Source initialization:', error)
-            console.error('❌ [DEBUG]: Database initialization failed!', error)
         }
     }
 
@@ -232,66 +155,60 @@ export class App {
         const URL_CASE_INSENSITIVE_REGEX: RegExp = /\/api\/v1\//i
         const URL_CASE_SENSITIVE_REGEX: RegExp = /\/api\/v1\//
 
-        if (process.env.FLOWISE_USERNAME && process.env.FLOWISE_PASSWORD) {
-            const username = process.env.FLOWISE_USERNAME
-            const password = process.env.FLOWISE_PASSWORD
-            const basicAuthMiddleware = basicAuth({
-                users: { [username]: password }
-            })
+        if (process.env.CENTRALIZED_AUTH === 'true') {
             this.app.use(async (req, res, next) => {
                 // Step 1: Check if the req path contains /api/v1 regardless of case
                 if (URL_CASE_INSENSITIVE_REGEX.test(req.path)) {
-                    // Step 2: Check if the req path is case sensitive
-                    if (URL_CASE_SENSITIVE_REGEX.test(req.path)) {
-                        // Step 3: Check if the req path is in the whitelist
-                        const isWhitelisted = whitelistURLs.some((url) => req.path.startsWith(url))
-                        if (isWhitelisted) {
-                            next()
-                        } else if (req.headers['x-request-from'] === 'internal') {
-                            basicAuthMiddleware(req, res, next)
-                        } else {
-                            const isKeyValidated = await validateAPIKey(req)
-                            if (!isKeyValidated) {
-                                return res.status(401).json({ error: 'Unauthorized Access3' })
-                            }
-                            next()
-                        }
-                    } else {
-                        return res.status(401).json({ error: 'Unauthorized Access2' })
+                    // Step 2: Check if the req path is in the whitelist
+                    const isWhitelisted = whitelistURLs.some((url) => req.path.startsWith(url))
+                    if (isWhitelisted) {
+                        return next() // ✅ Allow request to proceed if whitelisted
                     }
-                } else {
-                    // If the req path does not contain /api/v1, then allow the request to pass through, example: /assets, /canvas
-                    next()
-                }
-            })
-        } else {
-            this.app.use(async (req, res, next) => {
-                // Step 1: Check if the req path contains /api/v1 regardless of case
-                if (URL_CASE_INSENSITIVE_REGEX.test(req.path)) {
-                    // Step 2: Check if the req path is case sensitive
+        
+                    // Step 3: Check if the req path is case-sensitive match
                     if (URL_CASE_SENSITIVE_REGEX.test(req.path)) {
-                        // Step 3: Check if the req path is in the whitelist
-                        const isWhitelisted = whitelistURLs.some((url) => req.path.startsWith(url))
-                        if (isWhitelisted) {
-                            next()
-                        } else if (req.headers['x-request-from'] === 'internal') {
-                            next()
-                        } else {
-                            const isKeyValidated = await validateAPIKey(req)
-                            if (!isKeyValidated) {
-                                return res.status(401).json({ error: 'Unauthorized Access4' })
-                            }
-                            next()
+                        const userId = req.headers['x-user-id'] as string
+                        if (!userId) {
+                            return res.status(401).json({ error: 'Unauthorized: x-user-id header is required' })
                         }
+                        return next() // ✅ Proceed if `x-user-id` is present
                     } else {
-                        return res.status(401).json({ error: 'Unauthorized Access5' })
+                        return res.status(401).json({ error: 'Unauthorized Access' })
                     }
-                } else {
-                    // If the req path does not contain /api/v1, then allow the request to pass through, example: /assets, /canvas
-                    next()
                 }
+        
+                // Step 4: If the req path does not contain /api/v1, allow the request to pass through (e.g., /assets, /canvas)
+                next()
             })
-        }
+        }         
+        // else {
+        //     this.app.use(async (req, res, next) => {
+        //         // Step 1: Check if the req path contains /api/v1 regardless of case
+        //         if (URL_CASE_INSENSITIVE_REGEX.test(req.path)) {
+        //             // Step 2: Check if the req path is case sensitive
+        //             if (URL_CASE_SENSITIVE_REGEX.test(req.path)) {
+        //                 // Step 3: Check if the req path is in the whitelist
+        //                 const isWhitelisted = whitelistURLs.some((url) => req.path.startsWith(url))
+        //                 if (isWhitelisted) {
+        //                     next()
+        //                 } else if (req.headers['x-request-from'] === 'internal') {
+        //                     next()
+        //                 } else {
+        //                     const isKeyValidated = await validateAPIKey(req)
+        //                     if (!isKeyValidated) {
+        //                         return res.status(401).json({ error: 'Unauthorized Access' })
+        //                     }
+        //                     next()
+        //                 }
+        //             } else {
+        //                 return res.status(401).json({ error: 'Unauthorized Access' })
+        //             }
+        //         } else {
+        //             // If the req path does not contain /api/v1, then allow the request to pass through, example: /assets, /canvas
+        //             next()
+        //         }
+        //     })
+        // }
 
         if (process.env.ENABLE_METRICS === 'true') {
             switch (process.env.METRICS_PROVIDER) {

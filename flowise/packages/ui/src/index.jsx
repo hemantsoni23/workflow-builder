@@ -19,7 +19,7 @@ const root = createRoot(container)
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <BrowserRouter basename="/flowise">
+            <BrowserRouter basename='/flowise'>
                 <SnackbarProvider>
                     <ConfirmContextProvider>
                         <ReactFlowContext>

@@ -1,4 +1,4 @@
-import { removeFolderFromStorage } from 'flowise-components'
+import { ICommonObject, removeFolderFromStorage } from 'flowise-components'
 import { StatusCodes } from 'http-status-codes'
 import { ChatflowType, IReactFlowObject } from '../../Interface'
 import { ChatFlow } from '../../database/entities/ChatFlow'
@@ -26,6 +26,15 @@ const checkIfChatflowIsValidForStreaming = async (chatflowId: string): Promise<a
         })
         if (!chatflow) {
             throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Chatflow ${chatflowId} not found`)
+        }
+
+        /* Check for post-processing settings, if available isStreamValid is always false */
+        let chatflowConfig: ICommonObject = {}
+        if (chatflow.chatbotConfig) {
+            chatflowConfig = JSON.parse(chatflow.chatbotConfig)
+            if (chatflowConfig?.postProcessing?.enabled === true) {
+                return { isStreaming: false }
+            }
         }
 
         /*** Get Ending Node with Directed Graph  ***/
@@ -76,10 +85,13 @@ const checkIfChatflowIsValidForUploads = async (chatflowId: string): Promise<any
     }
 }
 
-const deleteChatflow = async (chatflowId: string): Promise<any> => {
+const deleteChatflow = async (chatflowId: string, userId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(ChatFlow).delete({ id: chatflowId })
+        const whereCondition: any = { id: chatflowId }
+        if (userId) whereCondition.userId = userId
+
+        const dbResponse = await appServer.AppDataSource.getRepository(ChatFlow).delete(whereCondition)
         try {
             // Delete all uploads corresponding to this chatflow
             await removeFolderFromStorage(chatflowId)
@@ -105,20 +117,20 @@ const deleteChatflow = async (chatflowId: string): Promise<any> => {
     }
 }
 
-const getAllChatflows = async (user_id: string, type?: ChatflowType): Promise<ChatFlow[]> => {
+const getAllChatflows = async (type?: ChatflowType, userId?: string): Promise<ChatFlow[]> => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(ChatFlow).find()
-        const filteredByUserId = dbResponse.filter((chatflow) => chatflow.user_id === user_id)
+        const whereCondition: any = {}
+        if (userId) whereCondition.userId = userId
 
-        // If a type is provided, filter further by type
+        const dbResponse = await appServer.AppDataSource.getRepository(ChatFlow).find({ where: whereCondition })
         if (type === 'MULTIAGENT') {
-            return filteredByUserId.filter((chatflow) => chatflow.type === 'MULTIAGENT')
+            return dbResponse.filter((chatflow) => chatflow.type === 'MULTIAGENT')
         } else if (type === 'CHATFLOW') {
-            return filteredByUserId.filter((chatflow) => chatflow.type === 'CHATFLOW' || !chatflow.type)
+            // fetch all chatflows that are not agentflow
+            return dbResponse.filter((chatflow) => chatflow.type === 'CHATFLOW' || !chatflow.type)
         }
-
-        return filteredByUserId // If no type is provided, return all matching user_id chatflows
+        return dbResponse
     } catch (error) {
         throw new InternalFlowiseError(
             StatusCodes.INTERNAL_SERVER_ERROR,
@@ -151,18 +163,16 @@ const getChatflowByApiKey = async (apiKeyId: string, keyonly?: unknown): Promise
     }
 }
 
-const getChatflowById = async (chatflowId: string, user_id: string): Promise<any> => {
+const getChatflowById = async (chatflowId: string, userId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(ChatFlow).findOneBy({
-            id: chatflowId,
-            user_id: user_id // Ensure chatflow belongs to the user
-        })
+        const whereCondition: any = { id: chatflowId }
+        if (userId) whereCondition.userId = userId
 
+        const dbResponse = await appServer.AppDataSource.getRepository(ChatFlow).findOneBy(whereCondition)
         if (!dbResponse) {
-            throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Chatflow ${chatflowId} not found or does not belong to user ${user_id}!`)
+            throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Chatflow ${chatflowId} not found in the database!`)
         }
-
         return dbResponse
     } catch (error) {
         throw new InternalFlowiseError(
@@ -172,10 +182,11 @@ const getChatflowById = async (chatflowId: string, user_id: string): Promise<any
     }
 }
 
-const saveChatflow = async (newChatFlow: ChatFlow): Promise<any> => {
+const saveChatflow = async (newChatFlow: ChatFlow,userId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
         let dbResponse: ChatFlow
+        if(userId) newChatFlow.userId = userId 
         if (containsBase64File(newChatFlow)) {
             // we need a 2-step process, as we need to save the chatflow first and then update the file paths
             // this is because we need the chatflow id to create the file paths
@@ -197,6 +208,7 @@ const saveChatflow = async (newChatFlow: ChatFlow): Promise<any> => {
         await appServer.telemetry.sendTelemetry('chatflow_created', {
             version: await getAppVersion(),
             chatflowId: dbResponse.id,
+            userId,
             flowGraph: getTelemetryFlowObj(JSON.parse(dbResponse.flowData)?.nodes, JSON.parse(dbResponse.flowData)?.edges)
         })
         appServer.metricsProvider?.incrementCounter(

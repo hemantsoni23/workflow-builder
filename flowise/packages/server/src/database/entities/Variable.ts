@@ -8,6 +8,9 @@ export class Variable implements IVariable {
     id: string
 
     @Column()
+    userId: string
+
+    @Column()
     name: string
 
     @Column({ nullable: true, type: 'text' })

@@ -154,16 +154,7 @@ const saveCustomTemplate = async (body: any): Promise<any> => {
         Object.assign(customTemplate, body)
 
         if (body.chatflowId) {
-            const user_id = 'user'
-
-            if (!user_id) {
-                throw new InternalFlowiseError(
-                    StatusCodes.PRECONDITION_FAILED,
-                    `Error: chatflowsRouter.getChatflowById - user_id not provided!`
-                )
-            }
-
-            const chatflow = await chatflowsService.getChatflowById(body.chatflowId, user_id as string)
+            const chatflow = await chatflowsService.getChatflowById(body.chatflowId)
             const flowData = JSON.parse(chatflow.flowData)
             const { framework, exportJson } = _generateExportFlowData(flowData)
             flowDataStr = JSON.stringify(exportJson)

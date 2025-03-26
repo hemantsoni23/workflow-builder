@@ -8,10 +8,10 @@ export class ChatFlow implements IChatFlow {
     id: string
 
     @Column()
-    name: string
+    userId: string
 
     @Column()
-    user_id: string
+    name: string
 
     @Column({ type: 'text' })
     flowData: string

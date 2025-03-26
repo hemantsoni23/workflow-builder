@@ -11,7 +11,8 @@ const createCredential = async (req: Request, res: Response, next: NextFunction)
                 `Error: credentialsController.createCredential - body not provided!`
             )
         }
-        const apiResponse = await credentialsService.createCredential(req.body)
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await credentialsService.createCredential(req.body, userId)
         return res.json(apiResponse)
     } catch (error) {
         next(error)
@@ -26,7 +27,8 @@ const deleteCredentials = async (req: Request, res: Response, next: NextFunction
                 `Error: credentialsController.deleteCredentials - id not provided!`
             )
         }
-        const apiResponse = await credentialsService.deleteCredentials(req.params.id)
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await credentialsService.deleteCredentials(req.params.id, userId)
         return res.json(apiResponse)
     } catch (error) {
         next(error)
@@ -35,7 +37,8 @@ const deleteCredentials = async (req: Request, res: Response, next: NextFunction
 
 const getAllCredentials = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const apiResponse = await credentialsService.getAllCredentials(req.query.credentialName)
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await credentialsService.getAllCredentials(req.query.credentialName, userId)
         return res.json(apiResponse)
     } catch (error) {
         next(error)
@@ -71,7 +74,8 @@ const updateCredential = async (req: Request, res: Response, next: NextFunction)
                 `Error: credentialsController.updateCredential - body not provided!`
             )
         }
-        const apiResponse = await credentialsService.updateCredential(req.params.id, req.body)
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await credentialsService.updateCredential(req.params.id, req.body, userId)
         return res.json(apiResponse)
     } catch (error) {
         next(error)
