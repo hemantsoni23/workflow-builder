@@ -14,9 +14,8 @@ import {
 import { StatusCodes } from 'http-status-codes'
 import { platformMustBeOwnedByCurrentUser } from '../ee/authentication/ee-authorization'
 import { smtpEmailSender } from '../ee/helper/email/email-sender/smtp-email-sender'
-import { userService } from '../user/user-service'
+import { licenseKeysService } from '../ee/license-keys/license-keys-service'
 import { platformService } from './platform.service'
-import { platformUtils } from './platform.utils'
 
 export const platformController: FastifyPluginAsyncTypebox = async (app) => {
     app.post('/:id', UpdatePlatformRequest, async (req, res) => {
@@ -27,16 +26,11 @@ export const platformController: FastifyPluginAsyncTypebox = async (app) => {
             await smtpEmailSender(req.log).validateOrThrow(smtp)
         }
 
-        return platformService.update({
+        const platform = await platformService.update({
             id: req.params.id,
             ...req.body,
         })
-    })
-
-    app.get('/', ListPlatformsForIdentityRequest, async (req) => {
-        const userId = await userService.getOneOrFail({ id: req.principal.id })
-        const platforms = await platformService.listPlatformsForIdentityWithAtleastProject({ identityId: userId.identityId })
-        return platforms.filter((platform) => !platformUtils.isEnterpriseCustomerOnCloud(platform))
+        return platform
     })
 
     app.get('/:id', GetPlatformRequest, async (req) => {
@@ -47,7 +41,12 @@ export const platformController: FastifyPluginAsyncTypebox = async (app) => {
             'paramId',
         )
         const platform = await platformService.getOneOrThrow(req.params.id)
-        return platform
+        const licenseKey = await licenseKeysService(req.log).getKey(platform.licenseKey)
+       
+        const platformWithoutSensitiveData = platform as PlatformWithoutSensitiveData
+        platformWithoutSensitiveData.licenseExpiresAt = licenseKey?.expiresAt
+        platformWithoutSensitiveData.hasLicenseKey = licenseKey !== null
+        return platformWithoutSensitiveData
     })
 }
 
@@ -63,18 +62,6 @@ const UpdatePlatformRequest = {
     },
 }
 
-const ListPlatformsForIdentityRequest = {
-    config: {
-        allowedPrincipals: [PrincipalType.USER],
-        scope: EndpointScope.PLATFORM,
-    },
-    schema: {
-        params: Type.Object({}),
-        response: {
-            [StatusCodes.OK]: Type.Array(PlatformWithoutSensitiveData),
-        },
-    },
-}
 const GetPlatformRequest = {
     config: {
         allowedPrincipals: [PrincipalType.USER, PrincipalType.SERVICE],

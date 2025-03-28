@@ -69,10 +69,10 @@ const TemplateViewer = ({ template }: { template: FlowTemplate }) => {
               )}
             </div>
             <div className="ml-auto flex items-center gap-2">
-              <Button variant={'secondary'} onClick={() => navigate('/flows')}>
+              <Button variant="grey" onClick={() => navigate('/flows')}>
                 {t('Cancel')}
               </Button>
-              <Button loading={isPending} onClick={() => mutate()}>
+              <Button variant="grey"  loading={isPending} onClick={() => mutate()} style={{ backgroundColor: '#E5E7EB' }}>
                 {t('Import')}
               </Button>
             </div>

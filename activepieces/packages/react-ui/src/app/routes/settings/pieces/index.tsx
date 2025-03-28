@@ -128,7 +128,7 @@ const ProjectPiecesPage = () => {
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
       <div className="mx-auto w-full flex-col">
-        {!platform.managePiecesEnabled && (
+        {/* {!platform.managePiecesEnabled && (
           <LockedAlert
             title={t('Control Pieces')}
             description={t(
@@ -141,7 +141,7 @@ const ProjectPiecesPage = () => {
               />
             }
           />
-        )}
+        )} */}
         <TableTitle>{t('Pieces')}</TableTitle>
         <DataTable
           columns={columns}

@@ -1,3 +1,328 @@
+// const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
+// const { join } = require('path');
+// const { fontFamily } = require('tailwindcss/defaultTheme');
+
+// /** @type {import('tailwindcss').Config} */
+// module.exports = {
+//   darkMode: ['class'],
+//   content: [
+//     join(
+//       __dirname,
+//       '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}',
+//     ),
+//     ...createGlobPatternsForDependencies(__dirname),
+//   ],
+//   theme: {
+//     transitionTimingFunction: {
+//       'expand-out': 'cubic-bezier(0.35, 0, 0.25, 1)',
+//     },
+//     container: {
+//       center: true,
+//       padding: '2rem',
+//       screens: {
+//         '2xl': '1400px',
+//       },
+//     },
+//     extend: {
+//       width: {
+//         '4.5': '1.125rem'
+//       },
+//       height: {
+//         '4.5': '1.125rem',
+//       },
+//       transitionDuration: {
+//         1500: '1500ms',
+//       },
+//       colors: {
+//         'light-blue': 'hsl(var(--light-blue))',
+//         warning: {
+//           DEFAULT: 'hsl(var(--warning))',
+//           100: 'hsl(var(--warning-100))',
+//           300: 'hsl(var(--warning-300))',
+//         },
+//         border: {
+//           DEFAULT: 'hsl(var(--border))',
+//         },
+//         input: 'hsl(var(--input))',
+//         ring: 'hsl(var(--ring))',
+//         background: 'hsl(var(--background))',
+//         foreground: 'hsl(var(--foreground))',
+//         primary: {
+//           DEFAULT: 'hsl(var(--primary))',
+//           foreground: 'hsl(var(--primary-foreground))',
+//           100: 'hsl(var(--primary-100))',
+//           300: 'hsl(var(--primary-300))',
+//         },
+//         success: {
+//           DEFAULT: 'hsl(var(--success))',
+//           100: 'hsl(var(--success-100))',
+//           300: 'hsl(var(--success-300))',
+//         },
+//         secondary: {
+//           DEFAULT: 'hsl(var(--secondary))',
+//           foreground: 'hsl(var(--secondary-foreground))',
+//         },
+//         destructive: {
+//           DEFAULT: 'hsl(var(--destructive))',
+//           100: 'hsl(var(--destructive-100))',
+//           300: 'hsl(var(--destructive-300))',
+//         },
+//         muted: {
+//           DEFAULT: 'hsl(var(--muted))',
+//           foreground: 'hsl(var(--muted-foreground))',
+//         },
+//         accent: {
+//           DEFAULT: 'hsl(var(--accent))',
+//           foreground: 'hsl(var(--accent-foreground))',
+//         },
+//         popover: {
+//           DEFAULT: 'hsl(var(--popover))',
+//           foreground: 'hsl(var(--popover-foreground))',
+//         },
+//         card: {
+//           DEFAULT: 'hsl(var(--card))',
+//           foreground: 'hsl(var(--card-foreground))',
+//         },
+//       },
+//       borderRadius: {
+//         lg: `var(--radius)`,
+//         md: `calc(var(--radius) - 2px)`,
+//         sm: 'calc(var(--radius) - 4px)',
+//         xs: 'calc(var(--radius) - 8px)',
+//         xss: 'calc(var(--radius) - 10px)',
+//       },
+//       fontFamily: {
+//         sans: ['var(--font-sans)', ...fontFamily.sans],
+//       },
+//       fontSize: {
+//         'xss': '0.65rem',
+//         '3xl': '1.75rem',
+//         '4xl': '2rem',
+//       },
+//       keyframes: {
+//         'accordion-down': {
+//           from: { height: '0' },
+//           to: { height: 'var(--radix-accordion-content-height)' },
+//         },
+//         'accordion-up': {
+//           from: { height: 'var(--radix-accordion-content-height)' },
+//           to: { height: '0' },
+//         },
+//         fade: {
+//           '0%': {
+//             opacity: 0,
+//           },
+//           '100%': {
+//             opacity: 1,
+//           },
+//         },
+//         typing: {
+//           "0%": {
+//             width: "0%",
+//             visibility: "hidden",
+//           },
+//           "100%": {
+//             width: "100%",
+//           }
+//         },
+//         'ask-ai-background':{
+//          '0%': {
+//           backgroundPosition: '0%'
+//           },
+//           '50%': {
+//             backgroundPosition: '100%'
+//           },
+//           '100%': {
+//             backgroundPosition: '0%'
+//           }
+//         }
+//       },
+//       animation: {
+//         'accordion-down': 'accordion-down 0.2s ease-out',
+//         'accordion-up': 'accordion-up 0.2s ease-out',
+//         fade: 'fade 0.2s ease-out',
+//         typing: 'typing 0.7s steps(7) alternate',
+//         'typing-sm': 'typing 0.5s steps(5) alternate',
+//         'ask-ai-background' : 'ask-ai-background 4s ease-in-out infinite'
+//       },
+//       boxShadow: {
+//         'step-container': '0px 0px 22px hsl(var(--border) / 0.4)',
+//         'add-button': 'var(--add-button-shadow)',
+//       },
+//     },
+//   },
+//   plugins: [require('tailwindcss-animate')],
+// };
+
+
+
+
+
+
+// const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
+// const { join } = require('path');
+// const { fontFamily } = require('tailwindcss/defaultTheme');
+
+// /** @type {import('tailwindcss').Config} */
+// module.exports = {
+//   darkMode: ['class'],
+//   content: [
+//     join(
+//       __dirname,
+//       '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}',
+//     ),
+//     ...createGlobPatternsForDependencies(__dirname),
+//   ],
+//   theme: {
+//     transitionTimingFunction: {
+//       'expand-out': 'cubic-bezier(0.35, 0, 0.25, 1)',
+//     },
+//     container: {
+//       center: true,
+//       padding: '2rem',
+//       screens: {
+//         '2xl': '1400px',
+//       },
+//     },
+//     extend: {
+//       width: {
+//         '4.5': '1.125rem'
+//       },
+//       height: {
+//         '4.5': '1.125rem',
+//       },
+//       transitionDuration: {
+//         1500: '1500ms',
+//       },
+//       colors: {
+//         'light-blue': 'hsl(var(--light-blue))',
+//         warning: {
+//           DEFAULT: 'hsl(var(--warning))',
+//           100: 'hsl(var(--warning-100))',
+//           300: 'hsl(var(--warning-300))',
+//         },
+//         border: {
+//           DEFAULT: 'hsl(var(--border))',
+//         },
+//         input: 'hsl(var(--input))',
+//         ring: 'hsl(var(--ring))',
+//         background: 'hsl(var(--background))',
+//         foreground: 'hsl(var(--foreground))',
+//         primary: {
+//           DEFAULT: 'hsl(var(--primary))',
+//           foreground: 'hsl(var(--primary-foreground))',
+//           100: 'hsl(var(--primary-100))',
+//           300: 'hsl(var(--primary-300))',
+//         },
+//         success: {
+//           DEFAULT: 'hsl(var(--success))',
+//           100: 'hsl(var(--success-100))',
+//           300: 'hsl(var(--success-300))',
+//         },
+//         secondary: {
+//           DEFAULT: 'hsl(var(--secondary))',
+//           foreground: 'hsl(var(--secondary-foreground))',
+//         },
+//         destructive: {
+//           DEFAULT: 'hsl(var(--destructive))',
+//           100: 'hsl(var(--destructive-100))',
+//           300: 'hsl(var(--destructive-300))',
+//         },
+//         muted: {
+//           DEFAULT: 'hsl(var(--muted))',
+//           foreground: 'hsl(var(--muted-foreground))',
+//         },
+//         accent: {
+//           DEFAULT: 'hsl(var(--accent))',
+//           foreground: 'hsl(var(--accent-foreground))',
+//         },
+//         popover: {
+//           DEFAULT: 'hsl(var(--popover))',
+//           foreground: 'hsl(var(--popover-foreground))',
+//         },
+//         card: {
+//           DEFAULT: 'hsl(var(--card))',
+//           foreground: 'hsl(var(--card-foreground))',
+//         },
+//       },
+//       borderRadius: {
+//         lg: `var(--radius)`,
+//         md: `calc(var(--radius) - 2px)`,
+//         sm: 'calc(var(--radius) - 4px)',
+//         xs: 'calc(var(--radius) - 8px)',
+//         xss: 'calc(var(--radius) - 10px)',
+//       },
+//       fontFamily: {
+//         sans: ['var(--font-sans)', ...fontFamily.sans],
+//         glyph: ['var(--font-glyph)', 'Geist', 'Inter', ...fontFamily.sans],
+//       },
+//       fontSize: {
+//         'xss': '0.65rem',
+//         '3xl': '1.75rem',
+//         '4xl': '2rem',
+//       },
+//       keyframes: {
+//         'accordion-down': {
+//           from: { height: '0' },
+//           to: { height: 'var(--radix-accordion-content-height)' },
+//         },
+//         'accordion-up': {
+//           from: { height: 'var(--radix-accordion-content-height)' },
+//           to: { height: '0' },
+//         },
+//         fade: {
+//           '0%': { opacity: 0 },
+//           '100%': { opacity: 1 },
+//         },
+//         typing: {
+//           "0%": { width: "0%", visibility: "hidden" },
+//           "100%": { width: "100%" }
+//         },
+//         'ask-ai-background': {
+//           '0%': { backgroundPosition: '0%' },
+//           '50%': { backgroundPosition: '100%' },
+//           '100%': { backgroundPosition: '0%' }
+//         },
+//         glow: {
+//           '0%, 100%': { opacity: 0.8 },
+//           '50%': { opacity: 0.3 }
+//         }
+//       },
+//       animation: {
+//         'accordion-down': 'accordion-down 0.2s ease-out',
+//         'accordion-up': 'accordion-up 0.2s ease-out',
+//         fade: 'fade 0.2s ease-out',
+//         typing: 'typing 0.7s steps(7) alternate',
+//         'typing-sm': 'typing 0.5s steps(5) alternate',
+//         'ask-ai-background': 'ask-ai-background 4s ease-in-out infinite',
+//         glow: 'glow 2s ease-in-out infinite'
+//       },
+//       boxShadow: {
+//         'step-container': '0px 0px 22px hsl(var(--border) / 0.4)',
+//         'add-button': 'var(--add-button-shadow)',
+//         'glyph': '0 0 0 2px hsl(var(--foreground)/0.05)',
+//         'glyph-md': '0 0 0 3px hsl(var(--foreground)/0.1)',
+//         'glyph-inner': 'inset 0 0 8px hsl(var(--foreground)/0.05)'
+//       },
+//       backgroundImage: {
+//         'dot-matrix': `radial-gradient(circle at 1px 1px, 
+//           hsl(var(--foreground)/0.1) 1px, 
+//           transparent 0)`,
+//       },
+//       backgroundSize: {
+//         'dot-matrix': '8px 8px',
+//       }
+//     },
+//   },
+//   plugins: [require('tailwindcss-animate')],
+// };
+
+
+
+
+
+
+
 const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
 const { fontFamily } = require('tailwindcss/defaultTheme');
@@ -8,7 +333,7 @@ module.exports = {
   content: [
     join(
       __dirname,
-      '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}',
+      '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'
     ),
     ...createGlobPatternsForDependencies(__dirname),
   ],
@@ -25,7 +350,7 @@ module.exports = {
     },
     extend: {
       width: {
-        '4.5': '1.125rem'
+        '4.5': '1.125rem',
       },
       height: {
         '4.5': '1.125rem',
@@ -93,6 +418,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        glyph: ['var(--font-glyph)', 'Geist', 'Inter', ...fontFamily.sans],
       },
       fontSize: {
         'xss': '0.65rem',
@@ -109,33 +435,30 @@ module.exports = {
           to: { height: '0' },
         },
         fade: {
-          '0%': {
-            opacity: 0,
-          },
-          '100%': {
-            opacity: 1,
-          },
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
         },
         typing: {
-          "0%": {
-            width: "0%",
-            visibility: "hidden",
-          },
-          "100%": {
-            width: "100%",
-          }
+          "0%": { width: "0%", visibility: "hidden" },
+          "100%": { width: "100%" },
         },
-        'ask-ai-background':{
-         '0%': {
-          backgroundPosition: '0%'
-          },
-          '50%': {
-            backgroundPosition: '100%'
-          },
-          '100%': {
-            backgroundPosition: '0%'
-          }
-        }
+        'ask-ai-background': {
+          '0%': { backgroundPosition: '0%' },
+          '50%': { backgroundPosition: '100%' },
+          '100%': { backgroundPosition: '0%' },
+        },
+        glow: {
+          '0%, 100%': { opacity: 0.8 },
+          '50%': { opacity: 0.3 },
+        },
+        // Dancing wave keyframes: moves horizontally and vertically for a "dancing" effect.
+        wave: {
+          '0%': { transform: 'translateX(0%) translateY(0%)' },
+          '25%': { transform: 'translateX(-5%) translateY(2%)' },
+          '50%': { transform: 'translateX(0%) translateY(0%)' },
+          '75%': { transform: 'translateX(5%) translateY(-2%)' },
+          '100%': { transform: 'translateX(0%) translateY(0%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -143,11 +466,24 @@ module.exports = {
         fade: 'fade 0.2s ease-out',
         typing: 'typing 0.7s steps(7) alternate',
         'typing-sm': 'typing 0.5s steps(5) alternate',
-        'ask-ai-background' : 'ask-ai-background 4s ease-in-out infinite'
+        'ask-ai-background': 'ask-ai-background 4s ease-in-out infinite',
+        glow: 'glow 2s ease-in-out infinite',
+        wave: 'wave 6s ease-in-out infinite',
       },
       boxShadow: {
         'step-container': '0px 0px 22px hsl(var(--border) / 0.4)',
         'add-button': 'var(--add-button-shadow)',
+        'glyph': '0 0 0 2px hsl(var(--foreground)/0.05)',
+        'glyph-md': '0 0 0 3px hsl(var(--foreground)/0.1)',
+        'glyph-inner': 'inset 0 0 8px hsl(var(--foreground)/0.05)',
+      },
+      backgroundImage: {
+        'dot-matrix': `radial-gradient(circle at 1px 1px, 
+          hsl(var(--foreground)/0.1) 1px, 
+          transparent 0)`,
+      },
+      backgroundSize: {
+        'dot-matrix': '8px 8px',
       },
     },
   },

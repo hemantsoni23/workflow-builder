@@ -432,7 +432,7 @@ function AppConnectionsPage() {
                 }}
               >
                 <Button
-                  variant="default"
+                  variant="grey"
                   size="sm"
                   disabled={!userHasPermissionToWriteAppConnection}
                 >

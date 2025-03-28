@@ -12,7 +12,7 @@ import { ErrorCode } from '@activepieces/shared';
 export const API_BASE_URL =
   import.meta.env.MODE === 'cloud'
     ? 'https://cloud.activepieces.com'
-    : `${window.location.origin}/activepieces`;
+    : window.location.origin;
 export const API_URL = `${API_BASE_URL}/api`;
 
 const disallowedRoutes = [
@@ -28,7 +28,8 @@ const disallowedRoutes = [
   '/v1/authn/local/reset-password',
   '/v1/user-invitations/accept',
 ];
-
+//This is important to avoid redirecting to sign-in page when the user is deleted for embedding scenarios
+const ignroedGlobalErrorHandlerRoutes = ['/v1/users/me'];
 function isUrlRelative(url: string) {
   return !url.startsWith('http') && !url.startsWith('https');
 }
@@ -69,9 +70,16 @@ function request<TResponse>(
           : `Bearer ${authenticationSession.getToken()}`,
     },
   })
-    .then((response) => response.data as TResponse)
+    .then((response) =>
+      config.responseType === 'blob'
+        ? response.data
+        : (response.data as TResponse),
+    )
     .catch((error) => {
-      if (isAxiosError(error)) {
+      if (
+        isAxiosError(error) &&
+        !ignroedGlobalErrorHandlerRoutes.includes(url)
+      ) {
         globalErrorHandler(error);
       }
       throw error;
@@ -84,7 +92,7 @@ export const api = {
   isError(error: unknown): error is HttpError {
     return isAxiosError(error);
   },
-  get: <TResponse>(url: string, query?: unknown) =>
+  get: <TResponse>(url: string, query?: unknown, config?: AxiosRequestConfig) =>
     request<TResponse>(url, {
       params: query,
       paramsSerializer: (params) => {
@@ -92,11 +100,17 @@ export const api = {
           arrayFormat: 'repeat',
         });
       },
+      ...config,
     }),
-  delete: <TResponse>(url: string, query?: Record<string, string>) =>
+  delete: <TResponse>(
+    url: string,
+    query?: Record<string, string>,
+    body?: unknown,
+  ) =>
     request<TResponse>(url, {
       method: 'DELETE',
       params: query,
+      data: body,
       paramsSerializer: (params) => {
         return qs.stringify(params, {
           arrayFormat: 'repeat',

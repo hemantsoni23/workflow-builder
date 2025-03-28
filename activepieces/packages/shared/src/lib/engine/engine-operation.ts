@@ -105,6 +105,7 @@ export type ExecuteTriggerOperation<HT extends TriggerHookType> = BaseEngineOper
 
 export type TriggerPayload<T = unknown> = {
     body: T
+    rawBody?: unknown
     headers: Record<string, string>
     queryParams: Record<string, string>
 }
@@ -170,6 +171,7 @@ export type ExecuteTriggerResponse<H extends TriggerHookType> = H extends Trigge
 
 export type ExecuteActionResponse = {
     success: boolean
+    input: unknown
     output: unknown
     message?: string
 }

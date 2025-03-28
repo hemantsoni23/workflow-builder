@@ -62,6 +62,7 @@ const PublishButton = () => {
       <Tooltip>
         <TooltipTrigger asChild className="disabled:pointer-events-auto">
           <Button
+          variant="grey"
             size={'sm'}
             loading={isSaving || isPublishingPending}
             disabled={isPublishedVersion || !flowVersion.valid}

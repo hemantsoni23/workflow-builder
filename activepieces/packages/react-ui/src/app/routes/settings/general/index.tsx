@@ -102,7 +102,7 @@ export default function GeneralPage() {
   });
 
   return (
-    <div className="flex flex-col items-center  gap-4">
+    <div className="flex flex-col items-center w-full gap-4">
       <div className="space-y-6 w-full">
         <div>
           <h3 className="text-xl font-semibold">{t('General')}</h3>
@@ -208,6 +208,7 @@ export default function GeneralPage() {
           {checkAccess(Permission.WRITE_PROJECT) && (
             <div className="flex gap-2 justify-end mt-4">
               <Button
+              variant="grey"
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
