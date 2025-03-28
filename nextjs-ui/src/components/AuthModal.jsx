@@ -12,7 +12,7 @@ import { Eye, EyeOff, X } from "lucide-react";
 // import GoogleSignInButton from "@/components/GoogleSignInButton";
 import { GoogleLogin } from "@react-oauth/google";
 
-const Auth = ({ close }) => {
+const Auth = ({ close, onAuthenticate }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const router = useRouter();
@@ -39,10 +39,9 @@ const Auth = ({ close }) => {
     try {
       const endpoint = type === "signup" ? "/api/auth/register" : "/api/auth/login";
       const response = await axios.post(endpoint, { ...formData }, { withCredentials: true });
-      
-      if (response.data?.token) {
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+      if (response.data.message === "Login successful" || response.data.message === "Registration successful") {
         router.push("/");
+        onAuthenticate();
         close();
         setTimeout(() => alert(`${type} successful!`), 300);
       } else {
@@ -57,13 +56,11 @@ const Auth = ({ close }) => {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       const token = credentialResponse.credential;
-      console.log("Token ==>",token);
       const response = await axios.post("/api/auth/google-login", { token }, { withCredentials: true });
-
-      if (response.data?.user) {
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        close();
+      if (response) {
         router.push("/");
+        onAuthenticate();
+        close();
         alert("Google login successful!");
       } else {
         alert("Google authentication failed. Try again.");

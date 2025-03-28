@@ -82,7 +82,7 @@
 
     # Default handler for everything else - goes to NextJS
     handle {
-        reverse_proxy nextjs:3000
+        reverse_proxy nextjs:3001
     }
 
     log {

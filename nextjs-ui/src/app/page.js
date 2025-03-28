@@ -12,26 +12,39 @@ export default function Home() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isPortal, setIsPortal] = useState(false);
-  const isAuthenticated = Cookies.get("noyco-token");
+  const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get("noyco_token"));
 
   useEffect(() => {
+    const token = Cookies.get("noyco_token");
+    setIsAuthenticated(!!token);
     setMounted(true);
   }, []);
 
+  const handleLogout = () => {
+    Cookies.remove("noyco_token");
+    setIsAuthenticated(false);
+    setIsPortal(false);
+    window.location.href='/'
+  };
+
+  const handleLogin = () => {
+    setIsPortal(true);
+  };
+
   const handleNavigation = (path) => {
-    if(isAuthenticated){
-      window.location.href = path;
-    }else{
+    if (isAuthenticated) {
+      window.location.href=path
+    } else {
       setIsPortal(true);
     }
   };
 
+  const toggleIsPortal = () => {
+    setIsPortal(!isPortal);
+  };
+
   if (!mounted) {
     return null;
-  }
-
-  const toggleIsPortal = () => {
-    setIsPortal(!isPortal)
   }
 
   return (
@@ -44,18 +57,15 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleIsPortal}
-            aria-label="Authentication"
-            className="rounded-sm px-6 py-4 border-2"
-          >
-            {isAuthenticated ? "Logout" : "Login"}
-          </Button>
-          </div>
+            <Button
+              variant="ghost"
+              onClick={isAuthenticated ? handleLogout : handleLogin}
+              aria-label="Authentication"
+              className="rounded-sm px-6 py-4 border-2"
+            >
+              {isAuthenticated ? "Logout" : "Login"}
+            </Button>
 
-          <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               size="icon"
@@ -73,7 +83,16 @@ export default function Home() {
         </div>
       </nav>
 
-      {isPortal && <AuthModal close={toggleIsPortal} />}
+      {isPortal && (
+        <AuthModal 
+          close={toggleIsPortal} 
+          onAuthenticate={() => {
+            setIsAuthenticated(true);
+          }} 
+        />
+      )}
+
+      {/* Rest of the existing code remains the same */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-primary/5 dark:bg-primary/10">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">

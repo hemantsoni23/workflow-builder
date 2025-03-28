@@ -29,9 +29,13 @@ export async function registerUser(req) {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    await User.create({ name, email, password: hashedPassword });
+    const newUser = await User.create({ name, email, password: hashedPassword });
 
-    return NextResponse.json({ message: "User registered successfully" }, { status: 201 });
+    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: "24h" });
+    const response = NextResponse.json({ message: "Registration successful" }, { status: 201 });
+    response.cookies.set("noyco_token", token, COOKIE_OPTIONS);
+
+    return response;
   } catch (error) {
     console.error("Register error:", error);
     return NextResponse.json({ message: "Server Error" }, { status: 500 });
@@ -55,7 +59,7 @@ export async function loginUser(req) {
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "24h" });
     const response = NextResponse.json({ message: "Login successful" }, { status: 200 });
-    response.cookies.set("auth_token", token, COOKIE_OPTIONS);
+    response.cookies.set("noyco_token", token, COOKIE_OPTIONS);
 
     return response;
   } catch (error) {
@@ -83,7 +87,7 @@ export async function googleLogin(req) {
 
     if (!user) {
       const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash("password", salt);
+      const hashedPassword = await bcrypt.hash("Password1!", salt);
       user = await User.create({
         googleId: userData.sub,
         name: userData.name,
@@ -94,7 +98,7 @@ export async function googleLogin(req) {
 
     const authToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "24h" });
     const response = NextResponse.json({ message: "Login successful!" }, { status: 200 });
-    response.cookies.set("auth_token", authToken, COOKIE_OPTIONS);
+    response.cookies.set("noyco_token", authToken, COOKIE_OPTIONS);
 
     return response;
   } catch (error) {
@@ -106,7 +110,7 @@ export async function googleLogin(req) {
 // Verify token
 export async function verifyToken(req) {
   try {
-    const token = req.cookies.get("auth_token");
+    const token = req.cookies.get("noyco_token");
     if (!token) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
