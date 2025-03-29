@@ -11,6 +11,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Eye, EyeOff, X } from "lucide-react";
 // import GoogleSignInButton from "@/components/GoogleSignInButton";
 import { GoogleLogin } from "@react-oauth/google";
+import { toast } from "sonner";
 
 const Auth = ({ close, onAuthenticate }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,7 +35,7 @@ const Auth = ({ close, onAuthenticate }) => {
   const handleSubmit = async (e, type) => {
     e.preventDefault();
     const error = validateForm(type);
-    if (error) return alert(error);
+    if (error) return toast(error);
     
     try {
       const endpoint = type === "signup" ? "/api/auth/register" : "/api/auth/login";
@@ -43,13 +44,13 @@ const Auth = ({ close, onAuthenticate }) => {
         router.push("/");
         onAuthenticate();
         close();
-        setTimeout(() => alert(`${type} successful!`), 300);
+        setTimeout(() => toast.success(`${response.data.message}!`), 300);
       } else {
-        alert("Authentication failed. Please try again.");
+        toast.error("Authentication failed. Please try again.");
       }
     } catch (error) {
       console.error(`${type} error:`, error);
-      alert(error?.response?.data?.message || "Server error!");
+      toast.error(error?.response?.data?.message || "Server error!");
     }
   };
 
@@ -61,19 +62,19 @@ const Auth = ({ close, onAuthenticate }) => {
         router.push("/");
         onAuthenticate();
         close();
-        alert("Google login successful!");
+        toast.success("Google login successful!");
       } else {
-        alert("Google authentication failed. Try again.");
+        toast.error("Google authentication failed. Try again.");
       }
     } catch (error) {
       console.error("Google login error:", error);
-      alert(error?.response?.data?.message || "Google login failed!");
+      toast.error(error?.response?.data?.message || "Google login failed!");
     }
   };
 
   const handleGoogleFailure = (error) => {
     console.error("Google login error:", error);
-    alert("Google login failed. Please try again.");
+    toast.error("Google login failed. Please try again.");
   };
 
   return (

@@ -110,7 +110,7 @@ export async function googleLogin(req) {
 // Verify token
 export async function verifyToken(req) {
   try {
-    const token = req.cookies.get("noyco_token");
+    const token = req.cookies.get("noyco_token")?.value;
     if (!token) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
@@ -123,7 +123,7 @@ export async function verifyToken(req) {
 
     return NextResponse.json({ userId:user.id }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Token verification failed" }, { status: 401 });
+    return NextResponse.json({ message: `Token verification failed !! Err - ${error}`}, { status: 401 });
   }
 }
 

@@ -9,10 +9,10 @@ import AuthModal from "@/components/AuthModal";
 import Cookies from "js-cookie";
 
 export default function Home() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isPortal, setIsPortal] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!Cookies.get("noyco_token"));
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("noyco_token");
@@ -24,7 +24,7 @@ export default function Home() {
     Cookies.remove("noyco_token");
     setIsAuthenticated(false);
     setIsPortal(false);
-    window.location.href='/'
+    window.location.href="/";
   };
 
   const handleLogin = () => {
@@ -33,7 +33,7 @@ export default function Home() {
 
   const handleNavigation = (path) => {
     if (isAuthenticated) {
-      window.location.href=path
+      window.location.href=path;
     } else {
       setIsPortal(true);
     }
@@ -41,6 +41,10 @@ export default function Home() {
 
   const toggleIsPortal = () => {
     setIsPortal(!isPortal);
+  };
+
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   if (!mounted) {
@@ -69,11 +73,11 @@ export default function Home() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={toggleTheme}
               aria-label="Toggle theme"
               className="rounded-full"
             >
-              {theme === "dark" ? (
+              {resolvedTheme === "dark" ? (
                 <SunIcon className="h-5 w-5" />
               ) : (
                 <MoonIcon className="h-5 w-5" />
@@ -101,7 +105,7 @@ export default function Home() {
                 Welcome to the Noyco Platform
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                Your integrated workspace for automation workflows and AI solutions
+                Your integrated workspace for automation workflows and AI-driven solutions
               </p>
             </div>
           </div>
@@ -113,6 +117,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <Card
             className="group relative overflow-hidden border border-border hover:border-primary hover:shadow-lg dark:hover:shadow-primary/20 transition-all duration-300 cursor-pointer"
+            // onClick={() => handleNavigation("/automation-worflows")}
             onClick={() => handleNavigation("/activepieces")}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
@@ -126,20 +131,21 @@ export default function Home() {
                 </svg>
               </div>
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">Activepieces</h2>
+                <h2 className="text-2xl font-bold">Workflow Automation</h2>
                 <p className="text-muted-foreground">
-                  Build powerful automation workflows with a visual, intuitive interface. Connect your tools and automate your processes.
+                  Build and manage automation workflows to streamline your processes with ease.
                 </p>
               </div>
               <div className="mt-6 flex items-center justify-between">
-                <span className="text-sm font-medium text-primary">Explore Platform</span>
-                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">No-code</span>
+                <span className="text-sm font-medium text-primary">Explore Workflows</span>
+                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">No-code Low-Code Automations</span>
               </div>
             </CardContent>
           </Card>
 
           <Card
             className="group relative overflow-hidden border border-border hover:border-primary hover:shadow-lg dark:hover:shadow-primary/20 transition-all duration-300 cursor-pointer"
+            // onClick={() => handleNavigation("/ai-assistant")}
             onClick={() => handleNavigation("/flowise")}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
@@ -153,13 +159,13 @@ export default function Home() {
                 </svg>
               </div>
               <div className="space-y-2">
-                <h2 className="text-2xl font-bold">Flowise</h2>
+                <h2 className="text-2xl font-bold">AI Assistant</h2>
                 <p className="text-muted-foreground">
-                  Build conversational AI agents and chatbots without writing code. Design intelligent workflows for customer support and automation.
+                  Utilize AI-powered tools to enhance decision-making, automate responses, and improve efficiency.
                 </p>
               </div>
               <div className="mt-6 flex items-center justify-between">
-                <span className="text-sm font-medium text-primary">Explore Platform</span>
+                <span className="text-sm font-medium text-primary">Explore AI Tools</span>
                 <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">AI-powered</span>
               </div>
             </CardContent>
