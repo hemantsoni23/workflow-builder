@@ -1,7 +1,9 @@
+// Check access-control-list.ts for the list of permissions, you can add new permissions there, restart the main server to apply the changes
 export enum Permission {
     READ_APP_CONNECTION = 'READ_APP_CONNECTION',
     WRITE_APP_CONNECTION = 'WRITE_APP_CONNECTION',
     READ_FLOW = 'READ_FLOW',
+    READ_ABOUT = 'READ_ABOUT',
     WRITE_FLOW = 'WRITE_FLOW',
     UPDATE_FLOW_STATUS = 'UPDATE_FLOW_STATUS',
     WRITE_INVITATION = 'WRITE_INVITATION',
@@ -20,6 +22,10 @@ export enum Permission {
     READ_ALERT = 'READ_ALERT',
     WRITE_PROJECT = 'WRITE_PROJECT',
     READ_PROJECT = 'READ_PROJECT',
+    READ_TODOS = 'READ_TODOS',
+    WRITE_TODOS = 'WRITE_TODOS',
+    READ_TABLE = 'READ_TABLE',
+    WRITE_TABLE = 'WRITE_TABLE',
 }
 
 export enum RoleType {

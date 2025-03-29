@@ -328,6 +328,7 @@ export function ChatPage() {
                 placeholder="Type your message here..."
               />
               <Button
+              
                 disabled={(!input && files.length === 0) || isSending}
                 type="submit"
                 size="icon"

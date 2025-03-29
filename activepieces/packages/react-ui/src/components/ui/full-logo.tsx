@@ -7,11 +7,13 @@ const FullLogo = () => {
 
   return (
     <div className="h-[60px]">
-      <img
+      {/* <img
         className="h-full"
-        src={branding.logos.fullLogoUrl}
+        // src={branding.logos.fullLogoUrl}
         alt={t('logo')}
-      />
+      /> */}
+     <h1 className="text-5xl font-italic text-gray-900 tracking-tight">Noyco</h1>
+     
     </div>
   );
 };

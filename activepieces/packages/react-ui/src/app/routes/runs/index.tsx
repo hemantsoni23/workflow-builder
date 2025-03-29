@@ -178,7 +178,7 @@ const FlowRunsPage = () => {
               >
                 <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild disabled={isDisabled}>
-                    <Button disabled={isDisabled} className="h-9 w-full">
+                    <Button  variant="grey" disabled={isDisabled} className="h-9 w-full">
                       <PlayIcon className="mr-2 h-3 w-4" />
                       {selectedRows.length > 0
                         ? `${t('Retry')} ${

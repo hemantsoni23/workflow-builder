@@ -203,6 +203,7 @@ export default function IssuesTable() {
                     hasPermission={userHasPermissionToMarkAsResolved}
                   >
                     <Button
+                    variant="grey"
                       disabled={!userHasPermissionToMarkAsResolved}
                       className="gap-2"
                       size={'sm'}

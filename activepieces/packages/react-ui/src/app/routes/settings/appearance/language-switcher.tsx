@@ -144,7 +144,7 @@ export function LanguageSwitcher() {
             </Command>
           </PopoverContent>
         </Popover>
-        {showCommunity ? (
+        {/* {showCommunity ? (
           <div className="text-sm text-muted-foreground mt-2">
             {t('Help us translate Activepieces to your language.')}
             <span
@@ -156,7 +156,7 @@ export function LanguageSwitcher() {
               {t('Learn more')}
             </span>
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );

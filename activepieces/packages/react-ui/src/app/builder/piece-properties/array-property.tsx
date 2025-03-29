@@ -41,6 +41,8 @@ const getDefaultValuesForInputs = (arrayProperties: ArraySubProps<boolean>) => {
       case PropertyType.LONG_TEXT:
       case PropertyType.SHORT_TEXT:
       case PropertyType.NUMBER:
+      case PropertyType.JSON:
+      case PropertyType.COLOR:
         return {
           ...acc,
           [key]: '',
@@ -98,7 +100,7 @@ const ArrayPieceProperty = React.memo(
       const value = arrayProperty.properties
         ? getDefaultValuesForInputs(arrayProperty.properties)
         : '';
-      const formValues = form.getValues(inputName);
+      const formValues = form.getValues(inputName) || [];
       const newFields = [
         ...formValues.map((value: string | Record<string, unknown>) => ({
           id: nanoid(),
