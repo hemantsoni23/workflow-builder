@@ -10,7 +10,7 @@ const apiClient = axios.create({
 })
 
 apiClient.interceptors.request.use(function (config) {
-    const userId = localStorage.getItem('userId')
+    const userId = sessionStorage.getItem('userId')
 
     if (userId) {
         config.headers['x-user-id'] = userId

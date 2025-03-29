@@ -17,6 +17,7 @@ import NavigationScroll from '@/layout/NavigationScroll';
 const App = () => {
     const customization = useSelector((state) => state.customization);
     const dispatch = useDispatch();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
         const verifyAuth = async () => {
@@ -33,10 +34,17 @@ const App = () => {
                 console.error("Token verification failed:", error);
                 dispatch({ type: 'LOGOUT' });
             }
+            setIsAuthenticated(true);
         };
 
         verifyAuth();
     }, [dispatch]);
+
+    if (!isAuthenticated) {
+        return (
+            <div>Loading .....</div>
+        )
+    }
 
     return (
         <StyledEngineProvider injectFirst>
