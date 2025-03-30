@@ -1,5 +1,5 @@
-import logo from '@/assets/images/flowise_logo.png'
-import logoDark from '@/assets/images/flowise_logo_dark.png'
+// import logo from '@/assets/images/flowise_logo.png'
+// import logoDark from '@/assets/images/flowise_logo_dark.png'
 
 import { useSelector } from 'react-redux'
 
@@ -10,11 +10,12 @@ const Logo = () => {
 
     return (
         <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'row' }}>
-            <img
+            <h1 onClick={()=>(window.location.href='/')}>NOYCO</h1>
+            {/* <img
                 style={{ objectFit: 'contain', height: 'auto', width: 150 }}
                 src={customization.isDarkMode ? logoDark : logo}
                 alt='Flowise'
-            />
+            /> */}
         </div>
     )
 }

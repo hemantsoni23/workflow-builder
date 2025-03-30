@@ -28,16 +28,20 @@ const StyledPopper = styled(Popper)({
 
 const fetchList = async ({ name, nodeData }) => {
     const loadMethod = nodeData.inputParams.find((param) => param.name === name)?.loadMethod
-    const username = localStorage.getItem('username')
-    const password = localStorage.getItem('password')
+    // const username = localStorage.getItem('username')
+    // const password = localStorage.getItem('password')
+    const userId = sessionStorage.getItem('userId')
 
     let lists = await axios
         .post(
             `${baseURL}/api/v1/node-load-method/${nodeData.name}`,
             { ...nodeData, loadMethod },
             {
-                auth: username && password ? { username, password } : undefined,
-                headers: { 'Content-type': 'application/json', 'x-request-from': 'internal' }
+                headers: { 
+                    'Content-type': 'application/json',
+                    'x-request-from': 'internal' ,
+                    'x-user-id': `${userId}`
+                }
             }
         )
         .then(async function (response) {

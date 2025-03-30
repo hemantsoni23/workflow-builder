@@ -368,11 +368,7 @@ const AddNodes = ({ nodesData, node, isAgentCanvas }) => {
                                                 {['LangChain', 'LlamaIndex', 'Utilities'].map((item, index) => (
                                                     <Tab
                                                         icon={
-                                                            <div
-                                                                style={{
-                                                                    borderRadius: '50%'
-                                                                }}
-                                                            >
+                                                            <div style={{ borderRadius: '50%' }}>
                                                                 <img
                                                                     style={{
                                                                         width: '20px',
@@ -386,11 +382,20 @@ const AddNodes = ({ nodesData, node, isAgentCanvas }) => {
                                                             </div>
                                                         }
                                                         iconPosition='start'
-                                                        sx={{ minHeight: '50px', height: '50px' }}
+                                                        sx={{
+                                                            minHeight: '50px',
+                                                            height: '50px',
+                                                            borderRadius: '12px', // Rounded corners
+                                                            // border: tabValue === index ? "2px solid red" : "2px solid transparent", // Only active tab gets a red border
+                                                            color: tabValue === index ? "white" : "inherit", // Only active tab text turns red
+                                                            "&:hover": {
+                                                                bgcolor: "action.hover", // Subtle hover effect
+                                                            },
+                                                        }}
                                                         key={index}
                                                         label={item}
                                                         {...a11yProps(index)}
-                                                    ></Tab>
+                                                    />
                                                 ))}
                                             </Tabs>
                                         )}

@@ -79,7 +79,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
     const changeDarkMode = () => {
         dispatch({ type: SET_DARKMODE, isDarkMode: !isDark })
         setIsDark((isDark) => !isDark)
-        localStorage.setItem('isDarkMode', !isDark)
+        localStorage.setItem('theme', isDark ? 'light' : 'dark')
     }
 
     const signOutClicked = () => {

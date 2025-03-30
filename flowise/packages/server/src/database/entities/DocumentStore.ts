@@ -7,6 +7,9 @@ export class DocumentStore implements IDocumentStore {
     id: string
 
     @Column({ nullable: false, type: 'text' })
+    userId: string
+
+    @Column({ nullable: false, type: 'text' })
     name: string
 
     @Column({ nullable: true, type: 'text' })
