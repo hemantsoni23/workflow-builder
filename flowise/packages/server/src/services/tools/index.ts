@@ -7,11 +7,14 @@ import { getRunningExpressApp } from '../../utils/getRunningExpressApp'
 import { FLOWISE_METRIC_COUNTERS, FLOWISE_COUNTER_STATUS } from '../../Interface.Metrics'
 import { QueryRunner } from 'typeorm'
 
-const createTool = async (requestBody: any): Promise<any> => {
+const createTool = async (requestBody: any, userId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
         const newTool = new Tool()
         Object.assign(newTool, requestBody)
+        if (userId) {
+            newTool.userId = userId
+        }
         const tool = await appServer.AppDataSource.getRepository(Tool).create(newTool)
         const dbResponse = await appServer.AppDataSource.getRepository(Tool).save(tool)
         await appServer.telemetry.sendTelemetry('tool_created', {
@@ -19,41 +22,55 @@ const createTool = async (requestBody: any): Promise<any> => {
             toolId: dbResponse.id,
             toolName: dbResponse.name
         })
-        appServer.metricsProvider?.incrementCounter(FLOWISE_METRIC_COUNTERS.TOOL_CREATED, { status: FLOWISE_COUNTER_STATUS.SUCCESS })
+
+        appServer.metricsProvider?.incrementCounter(FLOWISE_METRIC_COUNTERS.TOOL_CREATED, {
+            status: FLOWISE_COUNTER_STATUS.SUCCESS
+        })
+
         return dbResponse
     } catch (error) {
         throw new InternalFlowiseError(StatusCodes.INTERNAL_SERVER_ERROR, `Error: toolsService.createTool - ${getErrorMessage(error)}`)
     }
 }
 
-const deleteTool = async (toolId: string): Promise<any> => {
+const deleteTool = async (toolId: string, userId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(Tool).delete({
-            id: toolId
-        })
+        const repository = appServer.AppDataSource.getRepository(Tool)
+
+        const deleteCriteria = userId ? { id: toolId, userId } : { id: toolId }
+        const dbResponse = await repository.delete(deleteCriteria)
+
         return dbResponse
     } catch (error) {
         throw new InternalFlowiseError(StatusCodes.INTERNAL_SERVER_ERROR, `Error: toolsService.deleteTool - ${getErrorMessage(error)}`)
     }
 }
 
-const getAllTools = async (): Promise<Tool[]> => {
+const getAllTools = async (userId?: string): Promise<Tool[]> => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(Tool).find()
+        const repository = appServer.AppDataSource.getRepository(Tool)
+
+        const dbResponse = userId
+            ? await repository.find({ where: { userId } })
+            : await repository.find()
+
         return dbResponse
     } catch (error) {
         throw new InternalFlowiseError(StatusCodes.INTERNAL_SERVER_ERROR, `Error: toolsService.getAllTools - ${getErrorMessage(error)}`)
     }
 }
 
-const getToolById = async (toolId: string): Promise<any> => {
+const getToolById = async (toolId: string, userId?: string): Promise<any> => {
     try {
         const appServer = getRunningExpressApp()
-        const dbResponse = await appServer.AppDataSource.getRepository(Tool).findOneBy({
-            id: toolId
-        })
+        const repository = appServer.AppDataSource.getRepository(Tool)
+
+        // Find tool by ID and userId if provided
+        const findCriteria = userId ? { id: toolId, userId } : { id: toolId }
+        const dbResponse = await repository.findOneBy(findCriteria)
+
         if (!dbResponse) {
             throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Tool ${toolId} not found`)
         }

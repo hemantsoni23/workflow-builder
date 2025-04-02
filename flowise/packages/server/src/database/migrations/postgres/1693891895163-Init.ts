@@ -44,6 +44,7 @@ export class Init1693891895163 implements MigrationInterface {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS tool (
                 id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                "userId" varchar(255) NULL,
                 "name" varchar NOT NULL,
                 description text NOT NULL,
                 color varchar NOT NULL,

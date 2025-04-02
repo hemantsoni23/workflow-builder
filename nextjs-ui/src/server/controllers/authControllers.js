@@ -34,7 +34,7 @@ export async function registerUser(req) {
     const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: "24h" });
     const response = NextResponse.json({ message: "Registration successful" }, { status: 201 });
     response.cookies.set("noyco_token", token, COOKIE_OPTIONS);
-
+    response.cookies.set("isLoggedIn", "true", {maxAge: 24 * 60 * 60 * 1000, path: "/"});
     return response;
   } catch (error) {
     console.error("Register error:", error);
@@ -60,7 +60,7 @@ export async function loginUser(req) {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "24h" });
     const response = NextResponse.json({ message: "Login successful" }, { status: 200 });
     response.cookies.set("noyco_token", token, COOKIE_OPTIONS);
-
+    response.cookies.set("isLoggedIn", "true", {maxAge: 24 * 60 * 60 * 1000, path: "/"});
     return response;
   } catch (error) {
     console.error("Login error:", error);
@@ -99,7 +99,7 @@ export async function googleLogin(req) {
     const authToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "24h" });
     const response = NextResponse.json({ message: "Login successful!" }, { status: 200 });
     response.cookies.set("noyco_token", authToken, COOKIE_OPTIONS);
-
+    response.cookies.set("isLoggedIn", "true", {maxAge: 24 * 60 * 60 * 1000, path: "/"});
     return response;
   } catch (error) {
     console.error("Google login error:", error);

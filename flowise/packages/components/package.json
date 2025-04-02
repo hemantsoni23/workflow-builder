@@ -1,7 +1,7 @@
 {
     "name": "flowise-components",
     "version": "2.2.7-patch.1",
-    "description": "Flowiseai Components",
+    "description": "Agentflow Components",
     "main": "dist/src/index",
     "types": "dist/src/index.d.ts",
     "scripts": {
@@ -12,11 +12,7 @@
         "nuke": "rimraf dist node_modules .turbo"
     },
     "keywords": [],
-    "homepage": "https://flowiseai.com",
-    "author": {
-        "name": "Henry Heng",
-        "email": "henryheng@flowiseai.com"
-    },
+    "homepage": "/agentbuilder/",
     "license": "SEE LICENSE IN LICENSE.md",
     "dependencies": {
         "@apidevtools/json-schema-ref-parser": "^11.7.0",

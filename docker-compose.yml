@@ -20,11 +20,11 @@ services:
     entrypoint: sh -c "sleep 5 && caddy run --config /etc/caddy/Caddyfile"
 
   nextjs:
-    build:
-      context: ./nextjs-ui
+    image: workflow-builder_nextjs
     container_name: nextjs
     depends_on:
       - postgres
+      - flowise
     env_file: .env
     expose:
       - "3000"
@@ -86,7 +86,7 @@ services:
       - workflow-builder
 
   # activepieces:
-  #   image: anoop82yadav82/activepieces-noyco
+  #   image: nitink66/activepieces-noyco:latest
   #   container_name: activepieces
   #   restart: unless-stopped
   #   expose:
@@ -103,7 +103,7 @@ services:
   #     - workflow-builder
 
   flowise:
-    image: workflow-builder_flowise
+    image: workflow_builder-agentflow
     restart: always
     container_name: flowise
     depends_on:

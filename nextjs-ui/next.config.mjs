@@ -29,8 +29,8 @@ const nextConfig = {
                 permanent: true,
             },
             {
-                source: '/flowise',
-                destination: '/flowise/',
+                source: '/agentbuilder',
+                destination: '/agentbuilder/',
                 permanent: true,
             }
         ];
@@ -39,7 +39,7 @@ const nextConfig = {
     async headers() {
         return [
             {
-                source: "/flowise/api/:path*",
+                source: "/agentbuilder/api/:path*",
                 headers: [
                     { key: "x-nextjs-skip", value: "true" },
                 ],

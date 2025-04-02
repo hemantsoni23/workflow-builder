@@ -2,13 +2,12 @@
     "name": "flowise",
     "version": "2.2.7-patch.1",
     "private": true,
-    "homepage": "https://flowiseai.com",
+    "homepage": "/agentbuilder/",
     "workspaces": [
         "packages/*",
         "flowise",
         "ui",
-        "components",
-        "api-documentation"
+        "components"
     ],
     "scripts": {
         "build": "turbo run build",

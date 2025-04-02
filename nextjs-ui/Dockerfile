@@ -7,6 +7,8 @@ WORKDIR /src/app
 COPY package.json ./
 RUN npm install --frozen-lockfile
 
+ENV NEXT_PUBLIC_GOOGLE_CLIENT_ID=1066556847027-3pb0m9bavp54jkp5nhsnvpv5290eep7s.apps.googleusercontent.com
+
 COPY . .
 
 RUN npm run build

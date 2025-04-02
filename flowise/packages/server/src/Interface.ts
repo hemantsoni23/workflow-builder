@@ -86,6 +86,7 @@ export interface IChatMessageFeedback {
 
 export interface ITool {
     id: string
+    userId: string
     name: string
     description: string
     color: string

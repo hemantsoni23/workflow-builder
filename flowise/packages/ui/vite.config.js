@@ -21,7 +21,7 @@ export default defineConfig(async ({ mode }) => {
 
     dotenv.config()
     return {
-        base: process.env.VITE_BASE || '/flowise/',
+        base: process.env.VITE_BASE || '/agentbuilder/',
         plugins: [react()],
         resolve: {
             alias: {

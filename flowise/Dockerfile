@@ -22,8 +22,8 @@ RUN npm install -g pnpm
 ENV PUPPETEER_SKIP_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
     NODE_OPTIONS=--max-old-space-size=8192 \
-    VITE_API_BASE_URL=/flowise \
-    VITE_UI_BASE_URL=/flowise
+    VITE_API_BASE_URL=/agentbuilder \
+    VITE_UI_BASE_URL=/agentbuilder
     
 WORKDIR /usr/src
 
