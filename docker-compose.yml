@@ -20,7 +20,7 @@ services:
     entrypoint: sh -c "sleep 5 && caddy run --config /etc/caddy/Caddyfile"
 
   nextjs:
-    image: workflow-builder_nextjs
+    image: nitink66/nextjs-noyco:latest
     container_name: nextjs
     depends_on:
       - postgres
@@ -85,25 +85,25 @@ services:
     networks:
       - workflow-builder
 
-  # activepieces:
-  #   image: nitink66/activepieces-noyco:latest
-  #   container_name: activepieces
-  #   restart: unless-stopped
-  #   expose:
-  #     - "80"
-  #   ports:
-  #     - "8080:80"
-  #   depends_on:
-  #     - postgres
-  #     - redis
-  #   env_file: .env
-  #   volumes:
-  #     - app_cache:/usr/src/app/cache
-  #   networks:
-  #     - workflow-builder
+  activepieces:
+    image: workflow-builder_activepieces
+    container_name: activepieces
+    restart: unless-stopped
+    expose:
+      - "80"
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+      - redis
+    env_file: .env
+    volumes:
+      - app_cache:/usr/src/app/cache
+    networks:
+      - workflow-builder
 
   flowise:
-    image: workflow_builder-agentflow
+    image: worflow_builder-agentbuilder
     restart: always
     container_name: flowise
     depends_on:
