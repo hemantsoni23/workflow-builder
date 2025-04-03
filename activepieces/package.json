@@ -3,7 +3,7 @@
   "version": "0.45.1",
   "rcVersion": "0.46.0-rc.0",
   "scripts": {
-    "prepare": "husky install",
+
     "serve:frontend": "nx serve react-ui",
     "serve:backend": "nx serve server-api",
     "serve:engine": "nx serve engine",
@@ -384,7 +384,7 @@
     "eslint-plugin-tailwindcss": "3.17.4",
     "eslint-plugin-testing-library": "6.2.2",
     "eslint-plugin-vitest": "0.5.4",
-    "husky": "8.0.3",
+
     "i18next-parser": "9.0.2",
     "inquirer": "8.2.6",
     "jasmine-core": "4.2.0",
