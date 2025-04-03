@@ -1,3 +1,4 @@
+
 import { useMutation } from '@tanstack/react-query';
 import { t } from 'i18next';
 import {
@@ -147,7 +148,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                   }}
                   disabled={!userHasPermissionToUpdateFlow}
                 >
-                  <div className="flex cursor-pointer flex-row gap-2 items-center">
+                  <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                     <Pencil className="h-4 w-4" />
                     <span>{t('Rename')}</span>
                   </div>
@@ -165,7 +166,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                   onSelect={(e) => e.preventDefault()}
                   disabled={!userHasPermissionToUpdateFlow}
                 >
-                  <div className="flex cursor-pointer flex-row gap-2 items-center">
+                  <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                     <Pencil className="h-4 w-4" />
                     <span>{t('Rename')}</span>
                   </div>
@@ -180,7 +181,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
               disabled={!userHasPermissionToPushToGit}
               onSelect={(e) => e.preventDefault()}
             >
-              <div className="flex cursor-pointer  flex-row gap-2 items-center">
+              <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                 <UploadCloud className="h-4 w-4" />
                 <span>{t('Push to Git')}</span>
               </div>
@@ -202,7 +203,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                 }
                 onSelect={(e) => e.preventDefault()}
               >
-                <div className="flex cursor-pointer  flex-row gap-2 items-center">
+                <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                   <CornerUpLeft className="h-4 w-4" />
                   <span>{t('Move To')}</span>
                 </div>
@@ -215,7 +216,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
             disabled={!userHasPermissionToUpdateFlow}
             onClick={() => duplicateFlow()}
           >
-            <div className="flex cursor-pointer  flex-row gap-2 items-center">
+            <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
               {isDuplicatePending ? (
                 <LoadingSpinner />
               ) : (
@@ -237,16 +238,16 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                 disabled={!userHasPermissionToUpdateFlow}
                 onSelect={(e) => e.preventDefault()}
               >
-                <div className="flex cursor-pointer flex-row gap-2 items-center">
+                <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                   <Import className="w-4 h-4" />
-                  {t('Import')}
+                  <span>{t('Import')}</span>
                 </div>
               </DropdownMenuItem>
             </ImportFlowDialog>
           </PermissionNeededTooltip>
         )}
         <DropdownMenuItem onClick={() => exportFlow([flow])}>
-          <div className="flex cursor-pointer  flex-row gap-2 items-center">
+          <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
             {isExportPending ? (
               <LoadingSpinner />
             ) : (
@@ -258,7 +259,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
         {!embedState.isEmbedded && (
           <ShareTemplateDialog flowId={flow.id} flowVersionId={flowVersion.id}>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <div className="flex cursor-pointer  flex-row gap-2 items-center">
+              <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                 <Share2 className="h-4 w-4" />
                 <span>{t('Share')}</span>
               </div>
@@ -282,7 +283,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                       )}
                     </div>
                     {isDevelopmentBranch && (
-                      <div className="font-bold mt-2">
+                      <div className="font-bold mt-2 text-gray-700 dark:text-white">
                         {t(
                           'You are on a development branch, this will also delete the flow from the remote repository.',
                         )}
@@ -300,7 +301,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                   disabled={!userHasPermissionToUpdateFlow}
                   onSelect={(e) => e.preventDefault()}
                 >
-                  <div className="flex cursor-pointer  flex-row gap-2 items-center">
+                  <div className="flex cursor-pointer flex-row gap-2 items-center">
                     <Trash2 className="h-4 w-4 text-destructive" />
                     <span className="text-destructive">{t('Delete')}</span>
                   </div>

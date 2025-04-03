@@ -20,12 +20,12 @@ const nextConfig = {
             // }
         ];
     },
-    // Add redirects for proper handling of activepieces and flowise paths
+    // Add redirects for proper handling of pipeline and agentbuilder paths
     async redirects() {
         return [
             {
-                source: '/activepieces',
-                destination: '/activepieces/',
+                source: '/pipeline',
+                destination: '/pipeline/',
                 permanent: true,
             },
             {

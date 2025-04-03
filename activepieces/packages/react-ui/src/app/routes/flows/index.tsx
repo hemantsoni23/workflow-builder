@@ -883,6 +883,7 @@
 
 
 
+
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { t } from 'i18next';
@@ -1012,23 +1013,38 @@ const FlowsPage = () => {
 
   const [selectedRows, setSelectedRows] = useState<Array<PopulatedFlow>>([]);
 
-  const columns: (ColumnDef<RowDataWithActions<PopulatedFlow>> & { accessorKey: string; })[] = [
+  const columns: (ColumnDef<RowDataWithActions<PopulatedFlow>> & {
+    accessorKey: string;
+  })[] = [
     {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || table.getIsSomePageRowsSelected()}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            table.getIsSomePageRowsSelected()
+          }
           onCheckedChange={(value) => {
             const isChecked = !!value;
             table.toggleAllPageRowsSelected(isChecked);
             if (isChecked) {
-              const allRowIds = table.getRowModel().rows.map((row) => row.original);
+              const allRowIds = table.getRowModel().rows.map(
+                (row) => row.original
+              );
               const newSelectedRowIds = [...allRowIds, ...selectedRows];
-              const uniqueRowIds = Array.from(new Map(newSelectedRowIds.map((item) => [item.id, item])).values());
+              const uniqueRowIds = Array.from(
+                new Map(
+                  newSelectedRowIds.map((item) => [item.id, item])
+                ).values()
+              );
               setSelectedRows(uniqueRowIds);
             } else {
               const filteredRowIds = selectedRows.filter((row) => {
-                return !table.getRowModel().rows.some((r) => r.original.version.id === row.version.id);
+                return !table
+                  .getRowModel()
+                  .rows.some(
+                    (r) => r.original.version.id === row.version.id
+                  );
               });
               setSelectedRows(filteredRowIds);
             }
@@ -1052,7 +1068,9 @@ const FlowsPage = () => {
                   newSelectedRows.push(row.original);
                 }
               } else {
-                newSelectedRows = newSelectedRows.filter((r) => r.id !== row.original.id);
+                newSelectedRows = newSelectedRows.filter(
+                  (r) => r.id !== row.original.id
+                );
               }
               setSelectedRows(newSelectedRows);
               row.toggleSelected(isChecked);
@@ -1077,7 +1095,13 @@ const FlowsPage = () => {
         <DataTableColumnHeader column={column} title={t('Steps')} />
       ),
       cell: ({ row }) => (
-        <PieceIconList trigger={row.original.version.trigger} maxNumberOfIconsToShow={2} />
+        // Wrap PieceIconList with a dark mode class to ensure icons are visible in dark mode.
+        <div className="dark:text-white">
+          <PieceIconList
+            trigger={row.original.version.trigger}
+            maxNumberOfIconsToShow={2}
+          />
+        </div>
       ),
     },
     {
@@ -1094,7 +1118,7 @@ const FlowsPage = () => {
                 <FolderBadge folderId={folderId} />
               </div>
             ) : (
-              <span className="max-w-[140px] block overflow-hidden whitespace-nowrap truncate">
+              <span className="max-w-[140px] block overflow-hidden whitespace-nowrap truncate text-gray-700 dark:text-white">
                 {t('Uncategorized')}
               </span>
             )}
@@ -1119,8 +1143,14 @@ const FlowsPage = () => {
         <DataTableColumnHeader column={column} title={t('Status')} />
       ),
       cell: ({ row }) => (
-        <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
-          <FlowStatusToggle flow={row.original} flowVersion={row.original.version} />
+        <div
+          className="flex items-center space-x-2"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <FlowStatusToggle
+            flow={row.original}
+            flowVersion={row.original.version}
+          />
         </div>
       ),
     },
@@ -1155,7 +1185,7 @@ const FlowsPage = () => {
                 refetch();
               }}
             >
-              <EllipsisVertical className="h-10 w-10" />
+              <EllipsisVertical className="h-10 w-10 text-gray-700 dark:text-white" />
             </FlowActionMenu>
           </div>
         );
@@ -1206,7 +1236,9 @@ const FlowsPage = () => {
             <div className="flex items-center justify-between mb-8">
               <TableTitle>{t('Flows')}</TableTitle>
               <div className="flex items-center space-x-4">
-                <PermissionNeededTooltip hasPermission={doesUserHavePermissionToWriteFlow}>
+                <PermissionNeededTooltip
+                  hasPermission={doesUserHavePermissionToWriteFlow}
+                >
                   <ImportFlowDialog
                     insideBuilder={false}
                     onRefresh={() => {
@@ -1219,40 +1251,56 @@ const FlowsPage = () => {
                       disabled={!doesUserHavePermissionToWriteFlow}
                       className="gap-2"
                     >
-                      <Import className="w-4 h-4 mr-2" />
-                      <span>{t('Import Flow')}</span>
+                      <Import className="w-4 h-4 mr-2 text-gray-700 dark:text-white" />
+                      <span className="text-gray-700 dark:text-white">
+                        {t('Import Flow')}
+                      </span>
                     </Button>
                   </ImportFlowDialog>
                 </PermissionNeededTooltip>
 
-                <PermissionNeededTooltip hasPermission={doesUserHavePermissionToWriteFlow}>
+                <PermissionNeededTooltip
+                  hasPermission={doesUserHavePermissionToWriteFlow}
+                >
                   <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger disabled={!doesUserHavePermissionToWriteFlow} asChild>
+                    <DropdownMenuTrigger
+                      disabled={!doesUserHavePermissionToWriteFlow}
+                      asChild
+                    >
                       <Button
                         variant="grey"
                         disabled={!doesUserHavePermissionToWriteFlow}
                         className="flex items-center space-x-2"
                         loading={isCreateFlowPending}
                       >
-                        <span>{t('New Flow')}</span>
-                        <ChevronDown className="w-4 h-4" />
+                        <span className="text-gray-700 dark:text-white">
+                          {t('New Flow')}
+                        </span>
+                        <ChevronDown className="w-4 h-4 text-gray-700 dark:text-white" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem
-                        onSelect={(e) => { e.preventDefault(); createFlow(); }}
+                        onSelect={(e) => {
+                          e.preventDefault();
+                          createFlow();
+                        }}
                         disabled={isCreateFlowPending}
                       >
-                        <Plus className="w-4 h-4 mr-2" />
-                        <span>{t('From scratch')}</span>
+                        <Plus className="w-4 h-4 mr-2 text-gray-700 dark:text-white" />
+                        <span className="text-gray-700 dark:text-white">
+                          {t('From scratch')}
+                        </span>
                       </DropdownMenuItem>
                       <SelectFlowTemplateDialog>
                         <DropdownMenuItem
                           onSelect={(e) => e.preventDefault()}
                           disabled={isCreateFlowPending}
                         >
-                          <Workflow className="w-4 h-4 mr-2" />
-                          <span>{t('Use a template')}</span>
+                          <Workflow className="w-4 h-4 mr-2 text-gray-700 dark:text-white" />
+                          <span className="text-gray-700 dark:text-white">
+                            {t('Use a template')}
+                          </span>
                         </DropdownMenuItem>
                       </SelectFlowTemplateDialog>
                     </DropdownMenuContent>
@@ -1261,7 +1309,10 @@ const FlowsPage = () => {
               </div>
             </div>
             <DataTable
-              columns={columns.filter((column) => !embedState.hideFolders || column.accessorKey !== 'folderId')}
+              columns={columns.filter(
+                (column) =>
+                  !embedState.hideFolders || column.accessorKey !== 'folderId'
+              )}
               page={data}
               isLoading={isLoading}
               filters={filters}
@@ -1269,11 +1320,15 @@ const FlowsPage = () => {
               onRowClick={(row, newWindow) => {
                 if (newWindow) {
                   openNewWindow(
-                    authenticationSession.appendProjectRoutePrefix(`/flows/${row.id}`)
+                    authenticationSession.appendProjectRoutePrefix(
+                      `/flows/${row.id}`
+                    )
                   );
                 } else {
                   navigate(
-                    authenticationSession.appendProjectRoutePrefix(`/flows/${row.id}`)
+                    authenticationSession.appendProjectRoutePrefix(
+                      `/flows/${row.id}`
+                    )
                   );
                 }
               }}
@@ -1286,4 +1341,3 @@ const FlowsPage = () => {
 };
 
 export { FlowsPage };
-

@@ -34,7 +34,7 @@
     }
 
     # Handle requests for Activepieces at /activepieces
-    handle_path /activepieces/* {
+    handle_path /pipeline/* {
         # Set MIME types for critical file extensions
         header *.js Content-Type "application/javascript"
         header *.mjs Content-Type "application/javascript"

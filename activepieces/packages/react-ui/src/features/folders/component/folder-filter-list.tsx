@@ -854,10 +854,10 @@ const FolderFilterList = ({ refresh }: { refresh: number }) => {
         >
           <TextWithIcon
             icon={
-              <TableProperties className="w-4.5 h-4.5 -scale-100 text-gray-700" />
+              <TableProperties className="w-4.5 h-4.5 -scale-100 text-gray-700 dark:text-white" />
             }
             text={
-              <div className="flex-grow whitespace-break-spaces break-all text-start truncate text-gray-700">
+              <div className="flex-grow whitespace-break-spaces break-all text-start truncate text-gray-700 dark:text-white">
                 {t('All flows')}
               </div>
             }
@@ -874,9 +874,9 @@ const FolderFilterList = ({ refresh }: { refresh: number }) => {
           onClick={() => updateSearchParams('NULL')}
         >
           <TextWithIcon
-            icon={<Shapes className="w-4.5 h-4.5 text-gray-700" />}
+            icon={<Shapes className="w-4.5 h-4.5 text-gray-700 dark:text-white" />}
             text={
-              <div className="flex-grow whitespace-break-spaces break-all text-start truncate text-gray-700">
+              <div className="flex-grow whitespace-break-spaces break-all text-start truncate text-gray-700 dark:text-white">
                 {t('Uncategorized')}
               </div>
             }

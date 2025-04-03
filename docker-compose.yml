@@ -12,7 +12,7 @@ services:
       - caddy_config:/config
     depends_on:
       - nextjs
-      # - activepieces
+      - activepieces
       - flowise
     networks:
       - workflow-builder
@@ -20,7 +20,7 @@ services:
     entrypoint: sh -c "sleep 5 && caddy run --config /etc/caddy/Caddyfile"
 
   nextjs:
-    image: nitink66/nextjs-noyco:latest
+    image: workflow-builder_nextjs
     container_name: nextjs
     depends_on:
       - postgres
@@ -86,7 +86,7 @@ services:
       - workflow-builder
 
   activepieces:
-    image: workflow-builder_activepieces
+    image: workflow-builder_pipeline
     container_name: activepieces
     restart: unless-stopped
     expose:

@@ -33,7 +33,7 @@ export function App() {
           <EmbeddingFontLoader>
             <TelemetryProvider>
               <TooltipProvider>
-                <ThemeProvider storageKey="vite-ui-theme">
+                <ThemeProvider storageKey="theme">
                   <SidebarProvider>
                     <ApRouter />
                     <Toaster />

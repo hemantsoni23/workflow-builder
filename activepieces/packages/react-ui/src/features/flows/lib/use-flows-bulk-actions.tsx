@@ -85,7 +85,7 @@ export const useFlowsBulkActions = ({
                   <DropdownMenuTrigger asChild>
                     <Button
                       className="h-9 w-full"
-                      variant={'default'}
+                      variant={'grey'}
                       onClick={() => {
                         setIsDropdownOpen(!isDropdownOpen);
                       }}
