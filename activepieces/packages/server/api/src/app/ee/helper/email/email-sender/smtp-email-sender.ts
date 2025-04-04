@@ -15,19 +15,27 @@ type SMTPEmailSender = EmailSender & {
     isSmtpConfigured: (platform: Platform | null) => boolean
     validateOrThrow: (smtp: SMTPInformation) => Promise<void>
 }
+// here also changes
+
 
 export const smtpEmailSender = (log: FastifyBaseLogger): SMTPEmailSender => {
+    console.log("inside smtpEmailSender")
     return {
         async validateOrThrow(smtp: SMTPInformation) {
+            console.log("verfing...1")
             const disableSmtpValidationInTesting = system.getOrThrow(AppSystemProp.ENVIRONMENT) === ApEnvironment.TESTING
             if (disableSmtpValidationInTesting) {
                 return
             }
+            console.log("verfing...2")
             const smtpClient = initSmtpClient(smtp)
+            console.log("verfing...3")
             try {
+                console.log("verfing...4")
                 await smtpClient.verify()
             }
             catch (e) {
+                console.log("verfing...failed in smtp-email-sender.ts")
                 throw new ActivepiecesError({
                     code: ErrorCode.INVALID_SMTP_CREDENTIALS,
                     params: {
@@ -37,36 +45,46 @@ export const smtpEmailSender = (log: FastifyBaseLogger): SMTPEmailSender => {
             }
         },
         async send({ emails, platformId, templateData }) {
+            console.log(1)
             const platform = await getPlatform(platformId)
+            console.log(2)
             const emailSubject = getEmailSubject(templateData.name, templateData.vars)
+            console.log(3)
             const senderName = platform?.smtp?.senderName ?? system.get(AppSystemProp.SMTP_SENDER_NAME)
+            console.log(4)
             const senderEmail = platform?.smtp?.senderEmail ?? system.get(AppSystemProp.SMTP_SENDER_EMAIL)
+            console.log(5)
 
             if (!smtpEmailSender(log).isSmtpConfigured(platform)) {
                 log.error(`SMTP isn't configured for sending the email ${emailSubject}`)
                 return
             }
+            console.log(6)
 
             const emailBody = await renderEmailBody({
                 platform,
                 templateData,
             })
-
+            console.log(7)
             const smtpClient = initSmtpClient(platform?.smtp)
-
-            await smtpClient.sendMail({
+            console.log(8)
+            const res=await smtpClient.sendMail({
                 from: `${senderName} <${senderEmail}>`,
                 to: emails.join(','),
                 subject: emailSubject,
                 html: emailBody,
             })
+            console.log(res)
+            console.log(9)
         },
         isSmtpConfigured(platform: Platform | null): boolean {
+            console.log("smtp configuration checking started")
             const isConfigured = (host: string | undefined, port: string | undefined, user: string | undefined, password: string | undefined): boolean => {
                 return !isNil(host) && !isNil(port) && !isNil(user) && !isNil(password)
             }
+            console.log("smtp configuration is "+ " "+ isConfigured)
 
-            const isPlatformSmtpConfigured = !isNil(platform) && !isNil(platform.smtp) && isConfigured(platform.smtp.host, platform?.smtp?.port?.toString(), platform.smtp.user, platform.smtp.password)
+            const isPlatformSmtpConfigured = !isNil(platform) && !isNil(platform.smtp)
             const isSmtpSystemConfigured = isConfigured(system.get(AppSystemProp.SMTP_HOST), system.get(AppSystemProp.SMTP_PORT), system.get(AppSystemProp.SMTP_USERNAME), system.get(AppSystemProp.SMTP_PASSWORD))
 
             return isPlatformSmtpConfigured || isSmtpSystemConfigured
@@ -85,7 +103,7 @@ const renderEmailBody = async ({ platform, templateData }: RenderEmailBodyArgs):
     const footer = await readFile(footerPath, 'utf-8')
     const edition = system.getEdition()
     const primaryColor = platform?.primaryColor ?? defaultTheme.colors.primary.default
-    const fullLogoUrl = platform?.fullLogoUrl ?? defaultTheme.logos.fullLogoUrl
+    const fullLogoUrl ="https://marineinsurer.co.uk/wp-content/uploads/2020/05/logo-dummy.png"
     const platformName = platform?.name ?? defaultTheme.websiteName
 
     return Mustache.render(template, {
@@ -101,9 +119,13 @@ const renderEmailBody = async ({ platform, templateData }: RenderEmailBodyArgs):
                 return JSON.parse(templateData.vars.issues)
             }
         },
-        footerContent() {
-            return edition === ApEdition.CLOUD ? `   Activepieces, Inc. 398 11th Street,
-                    2nd floor, San Francisco, CA 94103` : `${platform?.name} Team.`
+        // footerContent() {
+        //     return edition === ApEdition.CLOUD ? `   Activepieces, Inc. 398 11th Street,
+        //             2nd floor, San Francisco, CA 94103` : `${platform?.name} Team.`
+        // },
+
+           footerContent() {
+            return 'Noyco'
         },
     },
     {

@@ -12,9 +12,9 @@ import { ErrorCode } from '@activepieces/shared';
 export const API_BASE_URL =
   import.meta.env.MODE === 'cloud'
     ? 'https://cloud.activepieces.com'
-    : `${window.location.origin}/pipeline`;
+    : window.location.origin;
 export const API_URL = `${API_BASE_URL}/api`;
-
+  console.log(import.meta.env)
 const disallowedRoutes = [
   '/v1/managed-authn/external-token',
   '/v1/authentication/sign-in',
@@ -28,8 +28,7 @@ const disallowedRoutes = [
   '/v1/authn/local/reset-password',
   '/v1/user-invitations/accept',
 ];
-//This is important to avoid redirecting to sign-in page when the user is deleted for embedding scenarios
-const ignroedGlobalErrorHandlerRoutes = ['/v1/users/me'];
+
 function isUrlRelative(url: string) {
   return !url.startsWith('http') && !url.startsWith('https');
 }
@@ -70,16 +69,9 @@ function request<TResponse>(
           : `Bearer ${authenticationSession.getToken()}`,
     },
   })
-    .then((response) =>
-      config.responseType === 'blob'
-        ? response.data
-        : (response.data as TResponse),
-    )
+    .then((response) => response.data as TResponse)
     .catch((error) => {
-      if (
-        isAxiosError(error) &&
-        !ignroedGlobalErrorHandlerRoutes.includes(url)
-      ) {
+      if (isAxiosError(error)) {
         globalErrorHandler(error);
       }
       throw error;
@@ -92,7 +84,7 @@ export const api = {
   isError(error: unknown): error is HttpError {
     return isAxiosError(error);
   },
-  get: <TResponse>(url: string, query?: unknown, config?: AxiosRequestConfig) =>
+  get: <TResponse>(url: string, query?: unknown) =>
     request<TResponse>(url, {
       params: query,
       paramsSerializer: (params) => {
@@ -100,9 +92,19 @@ export const api = {
           arrayFormat: 'repeat',
         });
       },
-      ...config,
     }),
-  delete: <TResponse>(
+  // delete: <TResponse>(url: string, query?: Record<string, string>) =>
+  //   request<TResponse>(url, {
+  //     method: 'DELETE',
+  //     params: query,
+  //     paramsSerializer: (params) => {
+  //       return qs.stringify(params, {
+  //         arrayFormat: 'repeat',
+  //       });
+  //     },
+  //   }),
+
+   delete: <TResponse>(
     url: string,
     query?: Record<string, string>,
     body?: unknown,
@@ -117,6 +119,7 @@ export const api = {
         });
       },
     }),
+
   post: <TResponse, TBody = unknown, TParams = unknown>(
     url: string,
     body?: TBody,

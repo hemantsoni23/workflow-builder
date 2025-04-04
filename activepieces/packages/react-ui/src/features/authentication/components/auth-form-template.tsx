@@ -71,6 +71,7 @@ const AuthFormTemplate = React.memo(
     const { data: isEmailAuthEnabled } = flagsHooks.useFlag<boolean>(
       ApFlagId.EMAIL_AUTH_ENABLED,
     );
+    console.log(isEmailAuthEnabled)
     const data = {
       signin: {
         title: t('Welcome Back!'),
@@ -94,7 +95,7 @@ const AuthFormTemplate = React.memo(
         )}
 
         <CardContent>
-          {!showCheckYourEmailNote && <ThirdPartyLogin isSignUp={isSignUp} />}
+          {/* {!showCheckYourEmailNote && <ThirdPartyLogin isSignUp={isSignUp} />} */}
           <AuthSeparator
             isEmailAuthEnabled={
               (isEmailAuthEnabled ?? true) && !showCheckYourEmailNote

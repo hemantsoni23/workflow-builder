@@ -8,11 +8,14 @@ import { smtpEmailSender } from './smtp-email-sender'
 export type EmailSender = {
     send: (args: SendArgs) => Promise<void>
 }
-
+// here also changes
 const getEmailSenderInstance = (log: FastifyBaseLogger): EmailSender => {
     const env = system.get(AppSystemProp.ENVIRONMENT)
+    console.log("getEmailSenderInstance-server-ee" + env)
+    console.log("opt started sending")
+    if (env !== ApEnvironment.PRODUCTION) {
+        console.log("environment verified")
 
-    if (env === ApEnvironment.PRODUCTION) {
         return smtpEmailSender(log)
     }
 

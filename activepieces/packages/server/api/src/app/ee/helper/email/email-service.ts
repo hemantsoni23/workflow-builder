@@ -67,7 +67,7 @@ export const emailService = (log: FastifyBaseLogger) => ({
         // TODO remove the hardcoded limit
         const alerts = await alertsService(log).list({ projectId, cursor: undefined, limit: MAX_ISSUES_EMAIL_LIMT })
         const emails = alerts.data.filter((alert) => alert.channel === AlertChannel.EMAIL).map((alert) => alert.receiver)
-        
+
         await emailSender(log).send({
             emails,
             platformId,
@@ -110,15 +110,18 @@ export const emailService = (log: FastifyBaseLogger) => ({
             },
         })
     },
-
+// here changes
     async sendOtp({ platformId, userIdentity, otp, type }: SendOtpArgs): Promise<void> {
+        console.log("email_otp_1")
         if (EDITION_IS_NOT_PAID) {
             return
         }
+        console.log("email_otp_2")
 
         if (userIdentity.verified && type === OtpType.EMAIL_VERIFICATION) {
             return
         }
+        console.log("email_otp_3")
 
         log.info('Sending OTP email', {
             email: userIdentity.email,
@@ -127,16 +130,20 @@ export const emailService = (log: FastifyBaseLogger) => ({
             type,
         })
 
+        console.log("email_otp_4")
+
         const frontendPath = {
             [OtpType.EMAIL_VERIFICATION]: 'verify-email',
             [OtpType.PASSWORD_RESET]: 'reset-password',
         }
+        console.log("email_otp_5")
 
         const setupLink = await domainHelper.getPublicUrl({
             platformId,
             path: frontendPath[type] + `?otpcode=${otp}&identityId=${userIdentity.id}`,
         })
 
+        console.log("email_otp_6")
         const otpToTemplate: Record<string, EmailTemplateData> = {
             [OtpType.EMAIL_VERIFICATION]: {
                 name: 'verify-email',
@@ -152,13 +159,21 @@ export const emailService = (log: FastifyBaseLogger) => ({
             },
         }
 
-        await emailSender(log).send({
+        console.log('Sending OTP email', {
+            email: userIdentity.email,
+            otp,
+            identityId: userIdentity.id,
+            type,
+        })
+        console.log("email_otp_7")
+      const res=  await emailSender(log).send({
             emails: [userIdentity.email],
             platformId: platformId ?? undefined,
             templateData: otpToTemplate[type],
         })
+        console.log("email_otp_8" +" "+ res)
     },
-    
+
     async sendReminderJobHandler(job: {
         projectId: string
         platformId: string
@@ -171,16 +186,16 @@ export const emailService = (log: FastifyBaseLogger) => ({
 
         const alerts = await alertsService(log).list({ projectId: job.projectId, cursor: undefined, limit: 50 })
         const emails = alerts.data.filter((alert) => alert.channel === AlertChannel.EMAIL).map((alert) => alert.receiver)
-        
+
         const issuesUrl = await domainHelper.getPublicUrl({
             platformId: job.platformId,
             path: 'runs?limit=10#Issues',
         })
 
-        const issuesWithFormattedDate = issues.data.map((issue) => ({ 
-            ...issue, 
+        const issuesWithFormattedDate = issues.data.map((issue) => ({
+            ...issue,
             created: dayjs(issue.created).format('MMM D, h:mm a'),
-            lastOccurrence: dayjs(issue.lastOccurrence).format('MMM D, h:mm a'), 
+            lastOccurrence: dayjs(issue.lastOccurrence).format('MMM D, h:mm a'),
         }))
 
         await emailSender(log).send({
@@ -202,7 +217,7 @@ export const emailService = (log: FastifyBaseLogger) => ({
         const alerts = await alertsService(log) .list({ projectId, cursor: undefined, limit: 50 })
         const emails = alerts.data.filter((alert) => alert.channel === AlertChannel.EMAIL).map((alert) => alert.receiver)
         const project = await projectService.getOneOrThrow(projectId)
-        
+
         await emailSender(log).send({
             emails,
             platformId: project.platformId,

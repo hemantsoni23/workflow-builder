@@ -1,4 +1,3 @@
-
 import { FastifyInstance } from 'fastify'
 import { appPostBoot } from './app/app'
 import { initializeDatabase } from './app/database'
@@ -55,12 +54,18 @@ function setupTimeZone(): void {
 
 const main = async (): Promise<void> => {
     setupTimeZone()
+    console.log("database is connecting...2")
     if (system.isApp()) {
+        console.log("Anoop1")
         await initializeDatabase({ runMigrations: true })
+        console.log(11)
         initializeLock()
     }
+    console.log("Database is connendted")
     const app = await setupServer()
 
+
+    console.log("Server is also setuped2")
     process.on('SIGINT', () => {
         stop(app).catch((e) => system.globalLogger().error(e, '[Main#stop]'))
     })
@@ -76,4 +81,3 @@ main().catch((e) => {
     system.globalLogger().error(e, '[Main#main]')
     process.exit(1)
 })
-
