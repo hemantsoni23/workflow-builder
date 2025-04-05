@@ -10,14 +10,10 @@ const apiClient = axios.create({
 })
 
 apiClient.interceptors.request.use(function (config) {
-    const username = localStorage.getItem('username')
-    const password = localStorage.getItem('password')
+    const userId = sessionStorage.getItem('userId')
 
-    if (username && password) {
-        config.auth = {
-            username,
-            password
-        }
+    if (userId) {
+        config.headers['x-user-id'] = userId
     }
 
     return config

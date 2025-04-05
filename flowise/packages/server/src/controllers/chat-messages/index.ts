@@ -143,17 +143,8 @@ const removeAllChatMessages = async (req: Request, res: Response, next: NextFunc
             )
         }
         const chatflowid = req.params.id
-
-        const user_id = 'user'
-
-        if (!user_id) {
-            throw new InternalFlowiseError(
-                StatusCodes.PRECONDITION_FAILED,
-                `Error: chatflowsRouter.getChatflowById - user_id not provided!`
-            )
-        }
-
-        const chatflow = await chatflowsService.getChatflowById(req.params.id, user_id as string)
+        const userId = req.headers['x-user-id'] as string
+        const chatflow = await chatflowsService.getChatflowById(userId, req.params.id)
         if (!chatflow) {
             return res.status(404).send(`Chatflow ${req.params.id} not found`)
         }

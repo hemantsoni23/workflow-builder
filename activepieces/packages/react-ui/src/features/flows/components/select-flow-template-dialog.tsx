@@ -92,7 +92,7 @@ const TemplateCard = ({ template, onSelectTemplate }: TemplateCardProps) => {
       <div className="text-sm font-medium px-4 min-h-16">{template.name}</div>
       <div className="py-2 px-4 gap-1 flex items-center">
         <Button
-          variant="default"
+          variant="grey"
           loading={isPending}
           className="px-2 h-8"
           onClick={() => createFlow(template)}

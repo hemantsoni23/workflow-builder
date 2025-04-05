@@ -7,6 +7,9 @@ export class Tool implements ITool {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
+    @Column({ type: 'text' })
+    userId: string
+
     @Column()
     name: string
 

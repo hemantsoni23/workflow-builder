@@ -255,7 +255,7 @@ const renderEmailBody = async ({ platform, templateData }: RenderEmailBodyArgs):
     const footer = await readFile(footerPath, 'utf-8')
     const edition = system.getEdition()
     const primaryColor = platform?.primaryColor ?? defaultTheme.colors.primary.default
-    const fullLogoUrl = platform?.fullLogoUrl ?? defaultTheme.logos.fullLogoUrl
+    const fullLogoUrl ="https://marineinsurer.co.uk/wp-content/uploads/2020/05/logo-dummy.png"
     const platformName = platform?.name ?? defaultTheme.websiteName
 
     return Mustache.render(template, {
@@ -271,9 +271,13 @@ const renderEmailBody = async ({ platform, templateData }: RenderEmailBodyArgs):
                 return JSON.parse(templateData.vars.issues)
             }
         },
-        footerContent() {
-            return edition === ApEdition.CLOUD ? `   Activepieces, Inc. 398 11th Street,
-                    2nd floor, San Francisco, CA 94103` : `${platform?.name} Team.`
+        // footerContent() {
+        //     return edition === ApEdition.CLOUD ? `   Activepieces, Inc. 398 11th Street,
+        //             2nd floor, San Francisco, CA 94103` : `${platform?.name} Team.`
+        // },
+
+           footerContent() {
+            return 'Noyco'
         },
     },
     {

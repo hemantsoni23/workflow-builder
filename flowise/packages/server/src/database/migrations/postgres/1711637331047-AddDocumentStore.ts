@@ -5,6 +5,7 @@ export class AddDocumentStore1711637331047 implements MigrationInterface {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS document_store (
                 id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                "userId" uuid NOT NULL,
                 "name" varchar NOT NULL,
                 "description" varchar,
                 "loaders" text,

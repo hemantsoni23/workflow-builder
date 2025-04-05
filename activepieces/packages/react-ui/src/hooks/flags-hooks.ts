@@ -30,7 +30,22 @@ export const flagsHooks = {
   },
   useWebsiteBranding: () => {
     const { data: theme } = flagsHooks.useFlag<WebsiteBrand>(ApFlagId.THEME);
-    return theme!;
+     return theme ?? {
+    websiteName: 'Default Name',
+    logos: {
+      fullLogoUrl: '',
+      favIconUrl: '',
+      logoIconUrl: '',
+    },
+    colors: {
+      primary: {
+        default: '#000',
+        dark: '#000',
+        light: '#000',
+      },
+    },
+  };
+
   },
   useFlag: <T>(flagId: ApFlagId) => {
     const data = useSuspenseQuery<FlagsMap, Error>({

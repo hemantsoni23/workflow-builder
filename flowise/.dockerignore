@@ -8,3 +8,28 @@ build
 
 packages/server/.env
 packages/ui/.env
+
+# Ignore git history
+.git
+.github
+
+# Ignore pnpm cache & lock files (not needed in the final image)
+pnpm-lock.yaml
+
+# Ignore IDE/editor files
+.vscode
+.idea
+*.log
+*.swp
+
+# Ignore unnecessary docs & config files
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+LICENSE.md
+SECURITY.md
+README.md
+
+# Ignore unnecessary folders (assets, images, metrics, etc.)
+assets
+images
+metrics

@@ -17,7 +17,8 @@ const createDocumentStore = async (req: Request, res: Response, next: NextFuncti
         }
         const body = req.body
         const docStore = DocumentStoreDTO.toEntity(body)
-        const apiResponse = await documentStoreService.createDocumentStore(docStore)
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await documentStoreService.createDocumentStore(docStore, userId)
         return res.json(apiResponse)
     } catch (error) {
         next(error)
@@ -26,7 +27,8 @@ const createDocumentStore = async (req: Request, res: Response, next: NextFuncti
 
 const getAllDocumentStores = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const apiResponse = await documentStoreService.getAllDocumentStores()
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await documentStoreService.getAllDocumentStores(userId)
         return res.json(DocumentStoreDTO.fromEntities(apiResponse))
     } catch (error) {
         next(error)
@@ -44,6 +46,7 @@ const deleteLoaderFromDocumentStore = async (req: Request, res: Response, next: 
                 `Error: documentStoreController.deleteLoaderFromDocumentStore - missing storeId or loaderId.`
             )
         }
+        const userId = req.headers['x-user-id'] as string
         const apiResponse = await documentStoreService.deleteLoaderFromDocumentStore(storeId, loaderId)
         return res.json(DocumentStoreDTO.fromEntity(apiResponse))
     } catch (error) {
@@ -59,7 +62,8 @@ const getDocumentStoreById = async (req: Request, res: Response, next: NextFunct
                 `Error: documentStoreController.getDocumentStoreById - id not provided!`
             )
         }
-        const apiResponse = await documentStoreService.getDocumentStoreById(req.params.id)
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await documentStoreService.getDocumentStoreById(req.params.id, userId)
         if (apiResponse && apiResponse.whereUsed) {
             apiResponse.whereUsed = JSON.stringify(await documentStoreService.getUsedChatflowNames(apiResponse))
         }
@@ -247,7 +251,8 @@ const deleteDocumentStore = async (req: Request, res: Response, next: NextFuncti
                 `Error: documentStoreController.deleteDocumentStore - storeId not provided!`
             )
         }
-        const apiResponse = await documentStoreService.deleteDocumentStore(req.params.id)
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await documentStoreService.deleteDocumentStore(req.params.id, userId)
         return res.json(apiResponse)
     } catch (error) {
         next(error)

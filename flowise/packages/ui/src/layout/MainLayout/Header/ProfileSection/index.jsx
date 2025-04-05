@@ -361,7 +361,7 @@ const ProfileSection = ({ username, handleLogout }) => {
                                     {username && (
                                         <Box sx={{ p: 2 }}>
                                             <Typography component='span' variant='h4'>
-                                                {username}
+                                                User Profile
                                             </Typography>
                                         </Box>
                                     )}
@@ -419,18 +419,17 @@ const ProfileSection = ({ username, handleLogout }) => {
                                                     </ListItemIcon>
                                                     <ListItemText primary={<Typography variant='body2'>About Flowise</Typography>} />
                                                 </ListItemButton>
-                                                {JSON.parse(localStorage.getItem('currentUser') || '{}')?.username &&
-                                                    JSON.parse(localStorage.getItem('currentUser') || '{}')?.token && (
-                                                        <ListItemButton
-                                                            sx={{ borderRadius: `${customization.borderRadius}px` }}
-                                                            onClick={handleLogout}
-                                                        >
-                                                            <ListItemIcon>
-                                                                <IconLogout stroke={1.5} size='1.3rem' />
-                                                            </ListItemIcon>
-                                                            <ListItemText primary={<Typography variant='body2'>Logout</Typography>} />
-                                                        </ListItemButton>
-                                                    )}
+                                                {localStorage.getItem('user_id') && (
+                                                    <ListItemButton
+                                                        sx={{ borderRadius: `${customization.borderRadius}px` }}
+                                                        onClick={handleLogout}
+                                                    >
+                                                        <ListItemIcon>
+                                                            <IconLogout stroke={1.5} size='1.3rem' />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={<Typography variant='body2'>Logout</Typography>} />
+                                                    </ListItemButton>
+                                                )}
                                             </List>
                                         </Box>
                                     </PerfectScrollbar>

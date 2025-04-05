@@ -15,7 +15,8 @@ const createVariable = async (req: Request, res: Response, next: NextFunction) =
         const body = req.body
         const newVariable = new Variable()
         Object.assign(newVariable, body)
-        const apiResponse = await variablesService.createVariable(newVariable)
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await variablesService.createVariable(newVariable, userId)
         return res.json(apiResponse)
     } catch (error) {
         next(error)
@@ -27,7 +28,8 @@ const deleteVariable = async (req: Request, res: Response, next: NextFunction) =
         if (typeof req.params === 'undefined' || !req.params.id) {
             throw new InternalFlowiseError(StatusCodes.PRECONDITION_FAILED, 'Error: variablesController.deleteVariable - id not provided!')
         }
-        const apiResponse = await variablesService.deleteVariable(req.params.id)
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await variablesService.deleteVariable(req.params.id, userId)
         return res.json(apiResponse)
     } catch (error) {
         next(error)
@@ -36,7 +38,8 @@ const deleteVariable = async (req: Request, res: Response, next: NextFunction) =
 
 const getAllVariables = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const apiResponse = await variablesService.getAllVariables()
+        const userId = req.headers['x-user-id'] as string
+        const apiResponse = await variablesService.getAllVariables(userId)
         return res.json(apiResponse)
     } catch (error) {
         next(error)

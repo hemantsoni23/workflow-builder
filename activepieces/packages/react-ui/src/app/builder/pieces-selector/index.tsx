@@ -21,6 +21,7 @@ import {
   StepMetadataWithSuggestions,
 } from '@/features/pieces/lib/types';
 import { platformHooks } from '@/hooks/platform-hooks';
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Action,
   ActionType,
@@ -71,19 +72,13 @@ const PieceSelector = ({
   const [selectedTag, setSelectedTag] = useState<PieceTagEnum>(
     PieceTagEnum.ALL,
   );
-  const [
-    applyOperation,
-    selectStepByName,
-    flowVersion,
-    setSampleData,
-    setAskAiButtonProps,
-  ] = useBuilderStateContext((state) => [
-    state.applyOperation,
-    state.selectStepByName,
-    state.flowVersion,
-    state.setSampleData,
-    state.setAskAiButtonProps,
-  ]);
+  const [applyOperation, selectStepByName, flowVersion, setAskAiButtonProps] =
+    useBuilderStateContext((state) => [
+      state.applyOperation,
+      state.selectStepByName,
+      state.flowVersion,
+      state.setAskAiButtonProps,
+    ]);
 
   const isTrigger = operation.type === FlowOperationType.UPDATE_TRIGGER;
   const { metadata, isLoading: isLoadingPieces } =
@@ -200,7 +195,6 @@ const PieceSelector = ({
 
     switch (operation.type) {
       case FlowOperationType.UPDATE_TRIGGER: {
-        setSampleData(stepData.name, undefined);
         applyOperation({
           type: FlowOperationType.UPDATE_TRIGGER,
           request: stepData as Trigger,
@@ -267,7 +261,7 @@ const PieceSelector = ({
     }
     setAskAiButtonProps(null);
   };
-  const isMobile = pieceSelectorUtils.useIsMobile();
+  const isMobile = useIsMobile();
   return (
     <Popover
       open={open}

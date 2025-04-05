@@ -18,7 +18,7 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-  theme: 'system',
+  theme: 'dark',
   setTheme: () => null,
 };
 
@@ -37,8 +37,8 @@ const setFavicon = (url: string) => {
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'system',
-  storageKey = 'ap-ui-theme',
+  defaultTheme = 'dark',
+  storageKey = 'theme',
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(

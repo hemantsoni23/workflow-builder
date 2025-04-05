@@ -10,7 +10,7 @@ const Logo = () => {
 
     return (
         <div style={{ alignItems: 'center', display: 'flex', flexDirection: 'row' }}>
-            <h1 style={{objectFit:'contain', height:'auto', width:150, color:`${customization.isDarkMode} ? "white" : "black"`}}>Noyco</h1>
+            <h1 onClick={()=>(window.location.href='/')}>NOYCO</h1>
             {/* <img
                 style={{ objectFit: 'contain', height: 'auto', width: 150 }}
                 src={customization.isDarkMode ? logoDark : logo}

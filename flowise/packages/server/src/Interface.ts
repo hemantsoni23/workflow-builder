@@ -36,13 +36,13 @@ export enum ChatMessageRatingType {
  */
 export interface IChatFlow {
     id: string
+    userId: string
     name: string
     flowData: string
     updatedDate: Date
     createdDate: Date
     deployed?: boolean
     isPublic?: boolean
-    user_id: string
     apikeyid?: string
     analytic?: string
     speechToText?: string
@@ -51,18 +51,6 @@ export interface IChatFlow {
     apiConfig?: string
     category?: string
     type?: ChatflowType
-}
-
-export interface IUser {
-    id: string
-    username?: string
-    email: string
-    password?: string
-    googleId?: string
-    profilePicture?: string
-    isGoogleUser: boolean
-    createdAt: Date
-    updatedAt: Date
 }
 
 export interface IChatMessage {
@@ -98,6 +86,7 @@ export interface IChatMessageFeedback {
 
 export interface ITool {
     id: string
+    userId: string
     name: string
     description: string
     color: string
@@ -119,6 +108,7 @@ export interface IAssistant {
 
 export interface ICredential {
     id: string
+    userId: string
     name: string
     credentialName: string
     encryptedData: string
@@ -128,6 +118,7 @@ export interface ICredential {
 
 export interface IVariable {
     id: string
+    userId: string
     name: string
     value: string
     type: string
@@ -302,6 +293,7 @@ export interface IUploadFileSizeAndTypes {
 
 export interface IApiKey {
     id: string
+    userId: string
     keyName: string
     apiKey: string
     apiSecret: string

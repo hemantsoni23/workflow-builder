@@ -17,6 +17,7 @@ export enum DocumentStoreStatus {
 
 export interface IDocumentStore {
     id: string
+    userId: string
     name: string
     description: string
     loaders: string // JSON string

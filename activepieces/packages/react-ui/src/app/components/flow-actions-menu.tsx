@@ -1,3 +1,4 @@
+
 import { useMutation } from '@tanstack/react-query';
 import { t } from 'i18next';
 import {
@@ -28,6 +29,7 @@ import {
   ImportFlowDialogProps,
 } from '@/features/flows/components/import-flow-dialog';
 import { RenameFlowDialog } from '@/features/flows/components/rename-flow-dialog';
+import { flowsHooks } from '@/features/flows/lib/flows-hooks';
 import { PushToGitDialog } from '@/features/git-sync/components/push-to-git-dialog';
 import { gitSyncHooks } from '@/features/git-sync/lib/git-sync-hooks';
 import { useAuthorization } from '@/hooks/authorization-hooks';
@@ -35,19 +37,18 @@ import { platformHooks } from '@/hooks/platform-hooks';
 import { authenticationSession } from '@/lib/authentication-session';
 import { GitBranchType } from '@activepieces/ee-shared';
 import {
-  Flow,
   FlowOperationType,
   FlowVersion,
   Permission,
+  PopulatedFlow,
 } from '@activepieces/shared';
 
 import { MoveFlowDialog } from '../../features/flows/components/move-flow-dialog';
 import { ShareTemplateDialog } from '../../features/flows/components/share-template-dialog';
 import { flowsApi } from '../../features/flows/lib/flows-api';
-import { flowsUtils } from '../../features/flows/lib/flows-utils';
 
 interface FlowActionMenuProps {
-  flow: Flow;
+  flow: PopulatedFlow;
   flowVersion: FlowVersion;
   children?: React.ReactNode;
   readonly: boolean;
@@ -76,6 +77,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
     platform.environmentsEnabled,
   );
   const { checkAccess } = useAuthorization();
+  const userHasPermissionToWriteFolder = checkAccess(Permission.WRITE_FOLDER);
   const userHasPermissionToUpdateFlow = checkAccess(Permission.WRITE_FLOW);
   const userHasPermissionToPushToGit = checkAccess(
     Permission.WRITE_PROJECT_RELEASE,
@@ -116,27 +118,21 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
     onError: () => toast(INTERNAL_ERROR_TOAST),
   });
 
-  const { mutate: exportFlow, isPending: isExportPending } = useMutation({
-    mutationFn: () => flowsUtils.downloadFlow(flow.id),
-    onSuccess: () => {
-      toast({
-        title: t('Success'),
-        description: t('Flow has been exported.'),
-        duration: 3000,
-      });
-    },
-    onError: () => toast(INTERNAL_ERROR_TOAST),
-  });
+  const { mutate: exportFlow, isPending: isExportPending } =
+    flowsHooks.useExportFlows();
 
   return (
-    <DropdownMenu modal={true} open={open} onOpenChange={setOpen}>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
         className="rounded-full p-2 hover:bg-muted cursor-pointer"
         asChild
       >
         {children}
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent
+        noAnimationOnOut={true}
+        onCloseAutoFocus={(e) => e.preventDefault()}
+      >
         {!readonly && (
           <>
             {insideBuilder && (
@@ -152,7 +148,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                   }}
                   disabled={!userHasPermissionToUpdateFlow}
                 >
-                  <div className="flex cursor-pointer flex-row gap-2 items-center">
+                  <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                     <Pencil className="h-4 w-4" />
                     <span>{t('Rename')}</span>
                   </div>
@@ -170,7 +166,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                   onSelect={(e) => e.preventDefault()}
                   disabled={!userHasPermissionToUpdateFlow}
                 >
-                  <div className="flex cursor-pointer flex-row gap-2 items-center">
+                  <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                     <Pencil className="h-4 w-4" />
                     <span>{t('Rename')}</span>
                   </div>
@@ -185,7 +181,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
               disabled={!userHasPermissionToPushToGit}
               onSelect={(e) => e.preventDefault()}
             >
-              <div className="flex cursor-pointer  flex-row gap-2 items-center">
+              <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                 <UploadCloud className="h-4 w-4" />
                 <span>{t('Push to Git')}</span>
               </div>
@@ -195,14 +191,19 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
 
         {!embedState.hideFolders && (
           <PermissionNeededTooltip
-            hasPermission={userHasPermissionToUpdateFlow}
+            hasPermission={
+              userHasPermissionToUpdateFlow || userHasPermissionToWriteFolder
+            }
           >
             <MoveFlowDialog flows={[flow]} onMoveTo={onMoveTo}>
               <DropdownMenuItem
-                disabled={!userHasPermissionToUpdateFlow}
+                disabled={
+                  !userHasPermissionToUpdateFlow ||
+                  !userHasPermissionToWriteFolder
+                }
                 onSelect={(e) => e.preventDefault()}
               >
-                <div className="flex cursor-pointer  flex-row gap-2 items-center">
+                <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                   <CornerUpLeft className="h-4 w-4" />
                   <span>{t('Move To')}</span>
                 </div>
@@ -215,7 +216,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
             disabled={!userHasPermissionToUpdateFlow}
             onClick={() => duplicateFlow()}
           >
-            <div className="flex cursor-pointer  flex-row gap-2 items-center">
+            <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
               {isDuplicatePending ? (
                 <LoadingSpinner />
               ) : (
@@ -237,16 +238,16 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                 disabled={!userHasPermissionToUpdateFlow}
                 onSelect={(e) => e.preventDefault()}
               >
-                <div className="flex cursor-pointer flex-row gap-2 items-center">
+                <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                   <Import className="w-4 h-4" />
-                  {t('Import')}
+                  <span>{t('Import')}</span>
                 </div>
               </DropdownMenuItem>
             </ImportFlowDialog>
           </PermissionNeededTooltip>
         )}
-        <DropdownMenuItem onClick={() => exportFlow()}>
-          <div className="flex cursor-pointer  flex-row gap-2 items-center">
+        <DropdownMenuItem onClick={() => exportFlow([flow])}>
+          <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
             {isExportPending ? (
               <LoadingSpinner />
             ) : (
@@ -258,7 +259,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
         {!embedState.isEmbedded && (
           <ShareTemplateDialog flowId={flow.id} flowVersionId={flowVersion.id}>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <div className="flex cursor-pointer  flex-row gap-2 items-center">
+              <div className="flex cursor-pointer flex-row gap-2 items-center text-gray-700 dark:text-white">
                 <Share2 className="h-4 w-4" />
                 <span>{t('Share')}</span>
               </div>
@@ -282,7 +283,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                       )}
                     </div>
                     {isDevelopmentBranch && (
-                      <div className="font-bold mt-2">
+                      <div className="font-bold mt-2 text-gray-700 dark:text-white">
                         {t(
                           'You are on a development branch, this will also delete the flow from the remote repository.',
                         )}
@@ -300,7 +301,7 @@ const FlowActionMenu: React.FC<FlowActionMenuProps> = ({
                   disabled={!userHasPermissionToUpdateFlow}
                   onSelect={(e) => e.preventDefault()}
                 >
-                  <div className="flex cursor-pointer  flex-row gap-2 items-center">
+                  <div className="flex cursor-pointer flex-row gap-2 items-center">
                     <Trash2 className="h-4 w-4 text-destructive" />
                     <span className="text-destructive">{t('Delete')}</span>
                   </div>

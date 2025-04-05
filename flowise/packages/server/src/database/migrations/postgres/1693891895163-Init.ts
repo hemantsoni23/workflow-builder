@@ -5,11 +5,11 @@ export class Init1693891895163 implements MigrationInterface {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS chat_flow (
                 id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                "userId" varchar(255) NULL,
                 "name" varchar NOT NULL,
                 "flowData" text NOT NULL,
                 deployed bool NULL,
                 "isPublic" bool NULL,
-                "user_id" varchar NOT NULL,
                 apikeyid varchar NULL,
                 "chatbotConfig" varchar NULL,
                 "createdDate" timestamp NOT NULL DEFAULT now(),
@@ -32,6 +32,7 @@ export class Init1693891895163 implements MigrationInterface {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS credential (
                 id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                "userId" varchar(255) NULL,
                 "name" varchar NOT NULL,
                 "credentialName" varchar NOT NULL,
                 "encryptedData" varchar NOT NULL,
@@ -43,6 +44,7 @@ export class Init1693891895163 implements MigrationInterface {
         await queryRunner.query(
             `CREATE TABLE IF NOT EXISTS tool (
                 id uuid NOT NULL DEFAULT uuid_generate_v4(),
+                "userId" varchar(255) NULL,
                 "name" varchar NOT NULL,
                 description text NOT NULL,
                 color varchar NOT NULL,

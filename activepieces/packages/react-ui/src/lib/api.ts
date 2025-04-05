@@ -14,7 +14,7 @@ export const API_BASE_URL =
     ? 'https://cloud.activepieces.com'
     : window.location.origin;
 export const API_URL = `${API_BASE_URL}/api`;
-
+  console.log(import.meta.env)
 const disallowedRoutes = [
   '/v1/managed-authn/external-token',
   '/v1/authentication/sign-in',
@@ -93,16 +93,33 @@ export const api = {
         });
       },
     }),
-  delete: <TResponse>(url: string, query?: Record<string, string>) =>
+  // delete: <TResponse>(url: string, query?: Record<string, string>) =>
+  //   request<TResponse>(url, {
+  //     method: 'DELETE',
+  //     params: query,
+  //     paramsSerializer: (params) => {
+  //       return qs.stringify(params, {
+  //         arrayFormat: 'repeat',
+  //       });
+  //     },
+  //   }),
+
+   delete: <TResponse>(
+    url: string,
+    query?: Record<string, string>,
+    body?: unknown,
+  ) =>
     request<TResponse>(url, {
       method: 'DELETE',
       params: query,
+      data: body,
       paramsSerializer: (params) => {
         return qs.stringify(params, {
           arrayFormat: 'repeat',
         });
       },
     }),
+
   post: <TResponse, TBody = unknown, TParams = unknown>(
     url: string,
     body?: TBody,

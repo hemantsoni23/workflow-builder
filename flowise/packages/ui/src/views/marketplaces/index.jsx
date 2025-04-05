@@ -555,10 +555,32 @@ const Marketplace = () => {
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </ViewHeader>
-                        <Tabs value={activeTabValue} onChange={handleTabChange} textColor='primary' aria-label='tabs' centered>
-                            <Tab value={0} label='Community Templates'></Tab>
-                            <Tab value={1} label='My Templates' />
-                        </Tabs>
+                        <Tabs value={activeTabValue} onChange={handleTabChange} textColor='black' aria-label="tabs" centered>
+                                <Tab
+                                    value={0}
+                                    label="Community Templates"
+                                    sx={activeTabValue === 0 ? {
+                                        borderRadius: 25,
+                                        bgcolor: "rgb(112 112 112)",
+                                        color: "white", // Text color
+                                        "&:hover": {
+                                            bgcolor: "rgb(112 112 112)", // Background color on hover
+                                        },
+                                    } : {}}
+                                />
+                                <Tab
+                                    value={1}
+                                    label="My Templates"
+                                    sx={activeTabValue === 1 ? {
+                                        borderRadius: 25,
+                                        bgcolor: "rgb(112 112 112)" ,// Background color
+                                        textColor: "white", // Text color
+                                        "&:hover": {
+                                            bgcolor: "rgb(112 112 112)", // Background color on hover
+                                        },
+                                    } : {}}
+                                />
+                            </Tabs>
                         <TabPanel value={activeTabValue} index={0}>
                             <Stack direction='row' sx={{ gap: 2, my: 2, alignItems: 'center', flexWrap: 'wrap' }}>
                                 {usecases.map((usecase, index) => (

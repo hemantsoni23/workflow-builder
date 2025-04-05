@@ -54,11 +54,17 @@ import { INPUT_PARAMS_TYPE, OMIT_QUEUE_JOB_DATA } from '../../utils/constants'
 
 const DOCUMENT_STORE_BASE_FOLDER = 'docustore'
 
-const createDocumentStore = async (newDocumentStore: DocumentStore) => {
+const createDocumentStore = async (newDocumentStore: DocumentStore, userId?: string) => {
     try {
         const appServer = getRunningExpressApp()
+        
+        if (userId) {
+            newDocumentStore.userId = userId
+        }
+
         const documentStore = appServer.AppDataSource.getRepository(DocumentStore).create(newDocumentStore)
         const dbResponse = await appServer.AppDataSource.getRepository(DocumentStore).save(documentStore)
+        
         return dbResponse
     } catch (error) {
         throw new InternalFlowiseError(
@@ -68,10 +74,14 @@ const createDocumentStore = async (newDocumentStore: DocumentStore) => {
     }
 }
 
-const getAllDocumentStores = async () => {
+const getAllDocumentStores = async (userId?: string) => {
     try {
         const appServer = getRunningExpressApp()
-        const entities = await appServer.AppDataSource.getRepository(DocumentStore).find()
+        
+        const entities = userId
+            ? await appServer.AppDataSource.getRepository(DocumentStore).find({ where: { userId } })
+            : await appServer.AppDataSource.getRepository(DocumentStore).find()
+        
         return entities
     } catch (error) {
         throw new InternalFlowiseError(
@@ -141,18 +151,21 @@ const deleteLoaderFromDocumentStore = async (storeId: string, docId: string) => 
     }
 }
 
-const getDocumentStoreById = async (storeId: string) => {
+const getDocumentStoreById = async (storeId: string, userId?: string) => {
     try {
         const appServer = getRunningExpressApp()
-        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOneBy({
-            id: storeId
+        
+        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOne({
+            where: userId ? { id: storeId, userId } : { id: storeId }
         })
+
         if (!entity) {
             throw new InternalFlowiseError(
                 StatusCodes.NOT_FOUND,
                 `Error: documentStoreServices.getDocumentStoreById - Document store ${storeId} not found`
             )
         }
+
         return entity
     } catch (error) {
         throw new InternalFlowiseError(
@@ -271,31 +284,25 @@ const getDocumentStoreFileChunks = async (appDataSource: DataSource, storeId: st
     }
 }
 
-const deleteDocumentStore = async (storeId: string) => {
+const deleteDocumentStore = async (storeId: string, userId?: string) => {
     try {
         const appServer = getRunningExpressApp()
-        // delete all the chunks associated with the store
-        await appServer.AppDataSource.getRepository(DocumentStoreFileChunk).delete({
-            storeId: storeId
+
+        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOne({
+            where: userId ? { id: storeId, userId } : { id: storeId }
         })
-        // now delete the files associated with the store
-        const entity = await appServer.AppDataSource.getRepository(DocumentStore).findOneBy({
-            id: storeId
-        })
+
         if (!entity) {
             throw new InternalFlowiseError(StatusCodes.NOT_FOUND, `Document store ${storeId} not found`)
         }
+
+        await appServer.AppDataSource.getRepository(DocumentStoreFileChunk).delete({ storeId })
+
         await removeFilesFromStorage(DOCUMENT_STORE_BASE_FOLDER, entity.id)
 
-        // delete upsert history
-        await appServer.AppDataSource.getRepository(UpsertHistory).delete({
-            chatflowid: storeId
-        })
+        await appServer.AppDataSource.getRepository(UpsertHistory).delete({ chatflowid: storeId })
 
-        // now delete the store
-        const tbd = await appServer.AppDataSource.getRepository(DocumentStore).delete({
-            id: storeId
-        })
+        const tbd = await appServer.AppDataSource.getRepository(DocumentStore).delete({ id: storeId })
 
         return { deleted: tbd.affected }
     } catch (error) {
@@ -843,7 +850,7 @@ const _saveChunksToStorage = async (
                         filesWithMetadata.push(fileMetadata)
                     }
                 }
-                data.loaderConfig[keys[i]] = 'FILE-STORAGE::' + JSON.stringify(fileNames)
+                if (fileNames.length) data.loaderConfig[keys[i]] = 'FILE-STORAGE::' + JSON.stringify(fileNames)
             } else if (re.test(input)) {
                 const fileNames: string[] = []
                 const fileMetadata = await _saveFileToStorage(input, entity)
