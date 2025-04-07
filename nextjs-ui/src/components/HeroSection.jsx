@@ -33,7 +33,7 @@ export default function HeroSection({ handleLogin }) {
             </span>
           </button>
           <button className="text-base px-6 py-2 rounded-lg border border-primary text-white hover:bg-primary/10 transition-colors dark:text-primary">
-            Watch Demo
+            About Us
           </button>
         </div>
       </div>
