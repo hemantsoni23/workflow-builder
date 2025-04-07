@@ -10,7 +10,7 @@ import { authenticationSession } from '@/lib/authentication-session';
 import { ErrorCode } from '@activepieces/shared';
 
 export const API_BASE_URL =
-  import.meta.env.MODE === 'cloud'
+  import.meta.env.MODE === 'cloudAnoopp'
     ? 'https://cloud.activepieces.com'
     : `${window.location.origin}/pipeline`;
 export const API_URL = `${API_BASE_URL}/api`;
