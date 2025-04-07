@@ -1,20 +1,43 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { MoonIcon, SunIcon } from "lucide-react";
 
-export default function Navbar({ 
-  isAuthenticated, 
-  handleLogin, 
-  handleLogout, 
+export default function Navbar({
+  isAuthenticated,
+  handleLogin,
+  handleLogout,
   resolvedTheme,
-  toggleTheme 
+  toggleTheme,
 }) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50); // Adjust scroll threshold as needed
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="sticky top-0 z-10 backdrop-blur-md bg-background/80 border-b border-border">
-      <div className="container flex justify-between items-center py-4">
+    <nav
+      className={`fixed top-0 left-0 w-full z-10 transition-all duration-300 ${
+        isScrolled
+          ? "bg-background/80 border-b border-border text-black dark:text-white dark:shadow-md dark:shadow-primary/20"
+          : "bg-transparent text-white"
+      }`}
+    >
+      <div className="container flex justify-between items-center py-4 max-w-6xl mx-auto">
         <div className="flex items-center pl-4">
-          <h1 className="text-2xl font-bold">NOYCO</h1>
+          <h1
+            className={`text-2xl font-bold ${
+              isScrolled ? "text-black dark:text-white" : "text-white"
+            }`}
+          >
+            Noyco
+          </h1>
         </div>
 
         <div className="flex items-center gap-4">
@@ -22,7 +45,11 @@ export default function Navbar({
             variant="ghost"
             onClick={isAuthenticated ? handleLogout : handleLogin}
             aria-label="Authentication"
-            className="rounded-sm px-6 py-4 border-2"
+            className={`rounded-sm px-6 py-4 ${
+              isScrolled
+                ? "hover:bg-primary/10 dark:hover:bg-primary/20"
+                : "hover:bg-white/10"
+            }`}
           >
             {isAuthenticated ? "Logout" : "Login"}
           </Button>
@@ -32,7 +59,9 @@ export default function Navbar({
             size="icon"
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="rounded-full"
+            className={`rounded-full ${
+              isScrolled ? "text-black dark:text-white" : "text-white"
+            }`}
           >
             {resolvedTheme === "dark" ? (
               <SunIcon className="h-5 w-5" />
