@@ -25,18 +25,18 @@ export default function Navbar({
     <nav
       className={`fixed top-0 left-0 w-full z-10 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/80 border-b border-border text-black dark:text-white dark:shadow-md dark:shadow-primary/20"
-          : "bg-transparent text-white"
+          ? "bg-background/80 border-b border-border dark:text-white text-black shadow-md dark:shadow-primary/20"
+          : "bg-transparent dark:text-white text-black"
       }`}
     >
       <div className="container flex justify-between items-center py-4 max-w-6xl mx-auto">
         <div className="flex items-center pl-4">
           <h1
-            className={`text-2xl font-bold ${
-              isScrolled ? "text-black dark:text-white" : "text-white"
+            className={`text-2xl font-bold brand-font ${
+              isScrolled ? "text-black dark:text-white" : "dark:text-white text-black"
             }`}
           >
-            Noyco
+            NOYCO
           </h1>
         </div>
 
@@ -60,7 +60,7 @@ export default function Navbar({
             onClick={toggleTheme}
             aria-label="Toggle theme"
             className={`rounded-full ${
-              isScrolled ? "text-black dark:text-white" : "text-white"
+              isScrolled ? "text-black dark:text-white" : "dark:text-white text-black"
             }`}
           >
             {resolvedTheme === "dark" ? (

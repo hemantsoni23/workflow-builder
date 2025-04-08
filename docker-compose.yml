@@ -20,7 +20,7 @@ services:
     entrypoint: sh -c "sleep 5 && caddy run --config /etc/caddy/Caddyfile"
 
   nextjs:
-    image: workflow-builder_nextjs
+    image: hemusoni/workflow-builder_noyco
     container_name: nextjs
     depends_on:
       - postgres

@@ -79,7 +79,7 @@ export default function Home() {
         "Scheduled and triggered automations",
       ],
       linkText: "Explore Workflow Builder",
-      badge: "Powered by Activepieces",
+      badge: "Powered by NOYCO",
       path: "/pipeline",
     },
     {
@@ -109,7 +109,7 @@ export default function Home() {
         "Integration with your automation workflows",
       ],
       linkText: "Build Your First Agent",
-      badge: "Powered by FlowiseAI",
+      badge: "Powered by NOYCO",
       path: "/agentbuilder",
     },
   ];
@@ -144,10 +144,10 @@ export default function Home() {
               Powerful Tools in One Platform
             </h2>
             <p className="text-xl text-muted-foreground text-center max-w-[800px] mx-auto mb-10">
-              NOYCO combines the power of Activepieces for workflow automation
+              <span className="brand-font">NOYCO</span> combines the power of Activepieces for workflow automation
               and FlowiseAI for intelligent agents
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
               {featureCardsData.map((card, index) => (
                 <EnhancedFeatureCard
                   key={index}

@@ -8,7 +8,7 @@ export default function EnhancedFeatureCard({
   onClick,
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-lg border bg-background p-6 hover:shadow-md transition-all duration-300 flex flex-col h-full">
+    <div className="group relative overflow-hidden rounded-lg border bg-background p-6 flex flex-col h-full cursor-pointer hover:border-primary hover:shadow-lg dark:hover:shadow-primary/20 transition-all duration-300" onClick={onClick}>
       {badge && (
         <div className="absolute top-4 right-4">
           <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
