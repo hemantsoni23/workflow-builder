@@ -6,7 +6,7 @@ export default function PlatformOverview() {
         <div className="absolute top-20 left-10 w-64 h-64 bg-primary/30 rounded-full filter blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-80 h-80 bg-secondary/20 rounded-full filter blur-3xl"></div>
       </div>
-      
+
       <div className="container px-4 md:px-6 relative">
         <div className="flex flex-col items-center mb-16">
           <div className="inline-block mb-2">
@@ -15,15 +15,16 @@ export default function PlatformOverview() {
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 tracking-tight">
-            The Integration Platform for <span className="text-primary">Modern Teams</span>
+            The Integration Platform for{" "}
+            <span className="text-primary">Modern Teams</span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground text-center max-w-[800px] leading-relaxed">
             NOYCO combines the best of workflow automation and AI agent
             technology in one seamless platform.
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-7xl mx-auto">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch max-w-7xl mx-auto">
           {/* No-Code Automation Card */}
           <div className="rounded-xl border bg-card text-card-foreground shadow-md overflow-hidden hover:border-primary hover:shadow-lg dark:hover:shadow-primary/20 transition-all duration-300 group relative h-full">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -54,28 +55,61 @@ export default function PlatformOverview() {
               <div className="mt-auto">
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-center">
-                    <svg className="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-5 h-5 text-primary mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                     <span>Visual workflow builder</span>
                   </li>
                   <li className="flex items-center">
-                    <svg className="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-5 h-5 text-primary mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                     <span>100+ app integrations</span>
                   </li>
                 </ul>
                 <button className="text-primary font-medium hover:underline inline-flex items-center group">
-                  Learn more 
-                  <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  Learn more
+                  <svg
+                    className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </button>
               </div>
             </div>
           </div>
-          
+
           {/* AI-Powered Agents Card */}
           <div className="rounded-xl border bg-card text-card-foreground shadow-md overflow-hidden hover:border-primary hover:shadow-lg dark:hover:shadow-primary/20 transition-all duration-300 group relative h-full">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -100,33 +134,154 @@ export default function PlatformOverview() {
                 AI-Powered Agents
               </h3>
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                Create intelligent agents that can understand, respond, and
-                take action based on your business needs.
+                Create intelligent agents that can understand, respond, and take
+                action based on your business needs.
               </p>
               <div className="mt-auto">
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-center">
-                    <svg className="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-5 h-5 text-primary mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                     <span>Custom knowledge base integration</span>
                   </li>
                   <li className="flex items-center">
-                    <svg className="w-5 h-5 text-primary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-5 h-5 text-primary mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                     <span>Multi-step conversation flows</span>
                   </li>
                 </ul>
                 <button className="text-primary font-medium hover:underline inline-flex items-center group">
-                  Learn more 
-                  <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  Learn more
+                  <svg
+                    className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </button>
               </div>
             </div>
           </div>
+
+          {/* AI Directory Card */}
+          <a
+            href="https://www.ai.noyco.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-xl border bg-card text-card-foreground shadow-md overflow-hidden hover:border-primary hover:shadow-lg dark:hover:shadow-primary/20 transition-all duration-300 group relative h-full block"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="p-6 md:p-8">
+              <div className="mb-6 bg-primary/10 p-4 rounded-lg inline-block">
+                <svg
+                  className="w-8 h-8 text-primary"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-semibold mb-4 group-hover:text-primary transition-colors duration-300">
+                AI Directory
+              </h3>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Explore a comprehensive directory of AI tools to find the
+                perfect solution for your tasks.
+              </p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center">
+                  <svg
+                    className="w-5 h-5 text-primary mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>Extensive collection of AI tools</span>
+                </li>
+                <li className="flex items-center">
+                  <svg
+                    className="w-5 h-5 text-primary mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>Search and filter by task or category</span>
+                </li>
+                <li className="flex items-center">
+                  <svg
+                    className="w-5 h-5 text-primary mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>Direct links to tool websites</span>
+                </li>
+              </ul>
+            </div>
+          </a>
         </div>
       </div>
     </section>

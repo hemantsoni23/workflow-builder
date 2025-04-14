@@ -80,7 +80,7 @@ export default function Home() {
       ],
       linkText: "Explore Workflow Builder",
       badge: "Powered by NOYCO",
-      path: "/pipeline",
+      path: "/", // Redirect to home page
     },
     {
       title: "AI Assistant Builder",
@@ -110,7 +110,36 @@ export default function Home() {
       ],
       linkText: "Build Your First Agent",
       badge: "Powered by NOYCO",
-      path: "/agentbuilder",
+      path: "/", // Redirect to home page
+    },
+    {
+      title: "AI Directory",
+      description:
+        "Explore a comprehensive directory of AI tools to find the perfect solution for your tasks.",
+      icon: (
+        <svg
+          className="w-8 h-8 text-primary"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 4v16m8-8H4"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+      features: [
+        "Extensive collection of AI tools",
+        "Search and filter by task or category",
+        "Direct links to tool websites",
+      ],
+      linkText: "Visit AI Directory",
+      badge: "Powered by NOYCO",
+      path: "https://www.ai.noyco.com", // Redirect to AI Directory
     },
   ];
 
@@ -144,8 +173,9 @@ export default function Home() {
               Powerful Tools in One Platform
             </h2>
             <p className="text-xl text-muted-foreground text-center max-w-[800px] mx-auto mb-10">
-              <span className="brand-font">NOYCO</span> combines the power of Activepieces for workflow automation
-              and FlowiseAI for intelligent agents
+              <span className="brand-font">NOYCO</span> combines the power of
+              Activepieces for workflow automation and FlowiseAI for intelligent
+              agents
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
               {featureCardsData.map((card, index) => (
