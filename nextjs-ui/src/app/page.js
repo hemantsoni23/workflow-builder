@@ -80,7 +80,7 @@ export default function Home() {
       ],
       linkText: "Explore Workflow Builder",
       badge: "Powered by NOYCO",
-      path: "/", // Redirect to home page
+      path: "/",
     },
     {
       title: "AI Assistant Builder",
