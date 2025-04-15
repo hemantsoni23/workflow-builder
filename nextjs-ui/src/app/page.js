@@ -39,7 +39,7 @@ export default function Home() {
   const handleLogin = () => setIsPortal(true);
 
   const handleNavigation = (path) => {
-    if (path === "/pipeline") {
+    if (path === "https://www.ai.noyco.com") {
       window.location.href = path;
       return;
     }
