@@ -32,6 +32,16 @@ const nextConfig = {
                 source: '/agentbuilder',
                 destination: '/agentbuilder/',
                 permanent: true,
+            },
+            {
+                source: '/featured',
+                destination: 'https://www.ai.noyco.com/featured',
+                permanent: true,
+            },
+            {
+                source: 'contact-us',
+                destination: 'https://www.ai.noyco.com/contact-us',
+                permanent: true
             }
         ];
     },
