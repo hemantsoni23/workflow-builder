@@ -14,10 +14,10 @@ const nextConfig = {
 
     async rewrites() {
         return [
-            // {
-            //     source: '/activepieces',
-            //     destination: '/activepieces/index.html',
-            // }
+            {
+                source: '/featured',
+                destination: 'https://www.ai.noyco.com/featured',
+            }
         ];
     },
     // Add redirects for proper handling of pipeline and agentbuilder paths
