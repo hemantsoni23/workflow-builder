@@ -8,63 +8,82 @@ const nextConfig = {
     return config;
   },
 
-    basePath: '',
-    // The rewrites here should be removed as they're now handled by Caddy
+  basePath: "",
 
-
-    async rewrites() {
-        return [
-            // {
-            //     source: '/activepieces',
-            //     destination: '/activepieces/index.html',
-            // }
-        ];
-    },
-    // Add redirects for proper handling of pipeline and agentbuilder paths
-    async redirects() {
-        return [
-            {
-                source: '/pipeline',
-                destination: '/pipeline/',
-                permanent: true,
-            },
-            {
-                source: '/agentbuilder',
-                destination: '/agentbuilder/',
-                permanent: true,
-            },
-            {
-                source: '/featured/:path*',
-                destination: 'https://www.ai.noyco.com/featured/:path*',
-                permanent: true,
-            },
-            {
-                source: 'contact-us',
-                destination: 'https://www.ai.noyco.com/contact-us',
-                permanent: true
-            }
-        ];
-    },
-    // Explicitly tell Next.js not to handle certain paths
-    async headers() {
-        return [
-            {
-                source: "/agentbuilder/api/:path*",
-                headers: [
-                    { key: "x-nextjs-skip", value: "true" },
-                ],
-            },
-            {
-                source: '/assets/:path*',
-                headers: [
-                    {
-                        key: 'x-nextjs-skip',
-                        value: 'true',
-                    },
-                ],
-            },
-        ];
-    },
+  async rewrites() {
+    return [
+      // {
+      //     source: '/activepieces',
+      //     destination: '/activepieces/index.html',
+      // }
+    ];
+  },
+  // Add redirects for proper handling of pipeline and agentbuilder paths
+  async redirects() {
+    return [
+      {
+        source: "/pipeline",
+        destination: "/pipeline/",
+        permanent: true,
+      },
+      {
+        source: "/agentbuilder",
+        destination: "/agentbuilder/",
+        permanent: true,
+      },
+      {
+        source: "/featured",
+        destination: "https://www.ai.noyco.com",
+        permanent: true,
+      },
+    //   {
+    //     source: "/featured/",
+    //     destination: "https://www.ai.noyco.com",
+    //     permanent: true,
+    //   },
+      {
+        source: "/contact-us",
+        destination: "https://www.ai.noyco.com/contact-us",
+        permanent: true,
+      },
+    ];
+  },
+  // Explicitly tell Next.js not to handle certain paths
+  async headers() {
+    return [
+      {
+        source: "/sitemap.xml",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/xml",
+          },
+        ],
+      },
+      {
+        source: "/robots.txt",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "text/plain",
+          },
+        ],
+      },
+      {
+        source: "/agentbuilder/api/:path*",
+        headers: [{ key: "x-nextjs-skip", value: "true" }],
+      },
+      {
+        source: "/assets/:path*",
+        headers: [
+          {
+            key: "x-nextjs-skip",
+            value: "true",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
