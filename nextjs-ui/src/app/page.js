@@ -109,7 +109,7 @@ export default function Home() {
         "Integration with your automation workflows",
       ],
       linkText: "Build Your First Agent",
-      badge: "Powered by NOYCO",
+      badge: "Powered by NOYCO.",
       path: "/", // Redirect to home page
     },
     {
